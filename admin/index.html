@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#272c33">
+  <meta name="robots" content="noindex, nofollow">
+  <title>اتاق فرمان | رسانه میم</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23272c33'/%3E%3Ccircle cx='32' cy='32' r='11' fill='none' stroke='%23e9b872' stroke-width='5'/%3E%3Ccircle cx='46' cy='18' r='4' fill='%23e9b872'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="adm is-checking">
+
+  <div class="bg" aria-hidden="true">
+    <span class="bg__blob bg__blob--a"></span>
+    <span class="bg__blob bg__blob--b"></span>
+    <span class="bg__blob bg__blob--c"></span>
+    <span class="bg__noise"></span>
+  </div>
+
+  <div class="auth-guard" id="auth-guard">
+    <span class="auth-guard__spinner" aria-hidden="true"></span>
+    <span>در حال بررسی نشست…</span>
+  </div>
+
+  <header class="nav" id="nav">
+    <a class="nav__brand" href="../" aria-label="بازگشت به سایت">
+      <svg viewBox="0 0 64 64" width="26" height="26" aria-hidden="true">
+        <circle cx="32" cy="32" r="11" fill="none" stroke="currentColor" stroke-width="5"/>
+        <circle cx="46" cy="18" r="4" fill="var(--accent)"/>
+      </svg>
+    </a>
+    <nav class="nav__menu" aria-label="بخش‌های پنل" role="tablist">
+      <button class="nav__link is-active" type="button" role="tab" data-tab="works" aria-selected="true">آثار</button>
+      <button class="nav__link" type="button" role="tab" data-tab="contact" aria-selected="false">تماس</button>
+      <button class="nav__link" type="button" role="tab" data-tab="skills" aria-selected="false">مهارت‌ها</button>
+      <button class="nav__link" type="button" role="tab" data-tab="content" aria-selected="false">متن‌ها</button>
+      <span class="nav__pill" aria-hidden="true"></span>
+    </nav>
+    <button class="nav__admin" type="button" id="logout">
+      <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="M14 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4M10 8l-4 4 4 4M6 12h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>خروج</span>
+    </button>
+  </header>
+
+  <main class="adm__main container" id="app" hidden>
+
+    <header class="adm__head">
+      <div>
+        <span class="eyebrow">پنل مدیریت</span>
+        <h1 class="adm__title">اتاق فرمان</h1>
+        <p class="adm__lead">هر تغییری که اینجا «ذخیره و انتشار» شود، همان لحظه روی سایت اصلی اعمال می‌شود؛ بدون نیاز به انتشار دوباره.</p>
+      </div>
+      <div class="adm__actions">
+        <a class="pill pill--glass" href="../" target="_blank" rel="noopener">
+          <span>مشاهده‌ی سایت</span>
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <button class="pill pill--glass" type="button" id="refresh">
+          <span>به‌روزرسانی</span>
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 6.3M20 5v6h-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <section class="kpis" id="kpis" aria-label="خلاصه‌ی وضعیت"></section>
+
+    <!-- ===== آثار ===== -->
+    <section class="panel is-active" id="panel-works" data-panel="works" role="tabpanel" aria-label="مدیریت آثار">
+      <article class="card">
+        <header class="card__row">
+          <div class="card__head">
+            <span class="eyebrow">آپلود</span>
+            <h2 class="card__title">افزودن اثر جدید</h2>
+          </div>
+          <p class="hint" id="upload-hint">هر فایل مستقیم در باکت عمومی ذخیره می‌شود.</p>
+        </header>
+
+        <label class="drop" id="drop">
+          <span class="drop__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="28" height="28"><path d="M12 16V5m0 0-4 4m4-4 4 4M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span class="drop__title">عکس‌ها را اینجا رها کنید یا برای انتخاب بزنید</span>
+          <span class="drop__sub">PNG، JPG، WEBP یا GIF · تا ۸ مگابایت برای هر عکس · انتخاب چندتایی مجاز است</span>
+          <input type="file" id="file" accept="image/png,image/jpeg,image/webp,image/gif" multiple>
+        </label>
+
+        <div class="drop-opts">
+          <label class="field">
+            <span>دسته‌ی اثرهای جدید</span>
+            <input class="input" id="up-tag" list="tag-list" placeholder="مثلاً پوستر" maxlength="40" autocomplete="off">
+            <datalist id="tag-list"></datalist>
+          </label>
+          <label class="switch"><input type="checkbox" id="up-first"><i></i><span>اثر جدید اول گالری باشد</span></label>
+          <label class="switch"><input type="checkbox" id="up-auto" checked><i></i><span>انتشار خودکار بعد از آپلود</span></label>
+        </div>
+
+        <div class="upload-status" id="upload-status" aria-live="polite"></div>
+      </article>
+
+      <article class="card">
+        <header class="card__row">
+          <div class="card__head">
+            <span class="eyebrow">آثار</span>
+            <h2 class="card__title">مدیریت آثار</h2>
+          </div>
+          <p class="hint">ترتیب کارت‌ها = ترتیب نمایش در گالری. با دکمه‌ها یا کشیدنِ دستگیره جابه‌جا کنید.</p>
+        </header>
+        <div class="chips" id="chips" role="group" aria-label="فیلتر دسته"></div>
+        <div class="works-grid" id="works-grid"></div>
+      </article>
+    </section>
+
+    <!-- ===== تماس ===== -->
+    <section class="panel" id="panel-contact" data-panel="contact" role="tabpanel" aria-label="اطلاعات تماس">
+      <article class="card">
+        <header class="card__head">
+          <span class="eyebrow">اطلاعات تماس</span>
+          <h2 class="card__title">راه‌های ارتباطی</h2>
+        </header>
+        <div class="grid-3">
+          <label class="field"><span>شماره‌ی تماس</span><input class="input input--ltr" id="c-phone" inputmode="tel" placeholder="09123456789" maxlength="20" autocomplete="tel"></label>
+          <label class="field"><span>شناسه‌ی شبکه‌های اجتماعی</span><input class="input input--ltr" id="c-id" placeholder="Resane_miim" maxlength="60" autocomplete="off"></label>
+          <label class="field"><span>ایمیل</span><input class="input input--ltr" id="c-email" type="email" placeholder="name@example.com" maxlength="120" autocomplete="email"></label>
+        </div>
+        <p class="hint">خالی گذاشتنِ شناسه یا ایمیل، آن بخش را در سایت به‌صورت «به‌زودی» نشان می‌دهد.</p>
+      </article>
+
+      <article class="card">
+        <header class="card__row">
+          <div class="card__head">
+            <span class="eyebrow">شبکه‌های اجتماعی</span>
+            <h2 class="card__title">لینک پلتفرم‌ها</h2>
+          </div>
+          <button class="pill pill--glass" type="button" id="add-plat">
+            <span>افزودن شبکه</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </button>
+        </header>
+        <div class="plat-list" id="plat-list"></div>
+        <p class="hint">حداکثر ۱۲ شبکه. اگر لینک خالی باشد و «شناسه» پر باشد، لینک اینستاگرام/تلگرام خودکار ساخته می‌شود؛ واتساپ از روی شماره‌ی تماس.</p>
+      </article>
+    </section>
+
+    <!-- ===== مهارت‌ها ===== -->
+    <section class="panel" id="panel-skills" data-panel="skills" role="tabpanel" aria-label="مدیریت مهارت‌ها">
+      <article class="card">
+        <header class="card__row">
+          <div class="card__head">
+            <span class="eyebrow">مهارت‌ها</span>
+            <h2 class="card__title">درصد یادگیری نرم‌افزارها</h2>
+          </div>
+          <button class="pill pill--glass" type="button" id="add-skill">
+            <span>افزودن مهارت</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </button>
+        </header>
+        <div class="skill-list" id="skill-list"></div>
+        <p class="hint">نوار را بکشید یا عدد را وارد کنید. ترتیب همین لیست، ترتیب نمایش در سایت است.</p>
+      </article>
+    </section>
+
+    <!-- ===== متن‌ها ===== -->
+    <section class="panel" id="panel-content" data-panel="content" role="tabpanel" aria-label="متن‌های سایت">
+      <article class="card">
+        <header class="card__head">
+          <span class="eyebrow">متن‌های سایت</span>
+          <h2 class="card__title">هویت و معرفی</h2>
+        </header>
+        <div class="grid-2">
+          <label class="field"><span>نام</span><input class="input" id="x-name" maxlength="80"></label>
+          <label class="field"><span>برند</span><input class="input" id="x-brand" maxlength="60"></label>
+          <label class="field"><span>نقش (فارسی)</span><input class="input" id="x-roleFa" maxlength="80"></label>
+          <label class="field"><span>نقش (انگلیسی)</span><input class="input input--ltr" id="x-roleEn" maxlength="80"></label>
+          <label class="field"><span>پیشواز هیرو</span><input class="input" id="x-heroGreet" maxlength="80"></label>
+          <label class="field"><span>عنوان درباره</span><input class="input" id="x-aboutHeading" maxlength="120"></label>
+          <label class="field"><span>بالانویس درباره</span><input class="input" id="x-aboutEyebrow" maxlength="60"></label>
+          <label class="field"><span>عنوان تجربه‌ها</span><input class="input" id="x-expHeading" maxlength="60"></label>
+          <label class="field"><span>بالانویس مهارت‌ها</span><input class="input" id="x-skillsEyebrow" maxlength="60"></label>
+          <label class="field"><span>عنوان مهارت‌ها</span><input class="input" id="x-skillsHeading" maxlength="120"></label>
+          <label class="field"><span>بالانویس آثار</span><input class="input" id="x-worksEyebrow" maxlength="60"></label>
+          <label class="field"><span>عنوان آثار</span><input class="input" id="x-worksHeading" maxlength="120"></label>
+          <label class="field"><span>متن CTA</span><input class="input" id="x-ctaText" maxlength="160"></label>
+          <label class="field"><span>برچسب دکمه‌ی CTA</span><input class="input" id="x-ctaButton" maxlength="40"></label>
+          <label class="field"><span>بالانویس تماس</span><input class="input" id="x-contactEyebrow" maxlength="60"></label>
+          <label class="field"><span>عنوان تماس</span><input class="input" id="x-contactHeading" maxlength="120"></label>
+          <label class="field"><span>مقدمه‌ی تماس</span><input class="input" id="x-contactLead" maxlength="200"></label>
+          <label class="field"><span>متن حقوقی فوتر</span><input class="input" id="x-footerLegal" maxlength="240"></label>
+          <label class="field"><span>برچسب خانه</span><input class="input" id="x-navHero" maxlength="30"></label>
+          <label class="field"><span>برچسب درباره</span><input class="input" id="x-navAbout" maxlength="30"></label>
+          <label class="field"><span>برچسب آثار</span><input class="input" id="x-navWorks" maxlength="30"></label>
+          <label class="field"><span>برچسب تماس</span><input class="input" id="x-navContact" maxlength="30"></label>
+        </div>
+        <label class="field" style="margin-top:14px"><span>متن درباره</span><textarea class="input textarea" id="x-aboutText" rows="4" maxlength="1200"></textarea></label>
+      </article>
+
+      <article class="card">
+        <header class="card__row">
+          <div class="card__head">
+            <span class="eyebrow">تجربه‌ها</span>
+            <h2 class="card__title">مسیر تجربه</h2>
+          </div>
+          <button class="pill pill--glass" type="button" id="add-exp">
+            <span>افزودن تجربه</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </button>
+        </header>
+        <div class="exp-editor" id="exp-editor"></div>
+      </article>
+
+      <article class="card">
+        <header class="card__row">
+          <div class="card__head">
+            <span class="eyebrow">آمار</span>
+            <h2 class="card__title">شمارنده‌های هیرو</h2>
+          </div>
+          <button class="pill pill--glass" type="button" id="add-stat">
+            <span>افزودن آمار</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </button>
+        </header>
+        <div class="stats-editor" id="stats-editor"></div>
+      </article>
+
+      <article class="card">
+        <header class="card__head">
+          <span class="eyebrow">پرتره</span>
+          <h2 class="card__title">عکس هیرو</h2>
+        </header>
+        <div class="portrait-row">
+          <img class="portrait-preview" id="portrait-preview" alt="پیش‌نمایش پرتره">
+          <div class="portrait-info">
+            <p class="hint">یک عکس عمودی (مثلاً ۴:۵) بارگذاری کنید. PNG، JPG، WEBP یا GIF و حداکثر ۸ مگابایت.</p>
+            <label class="pill pill--glass" for="portrait-file" style="cursor:pointer;margin-top:10px">
+              <span>انتخاب عکس جدید</span>
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 16V5m0 0-4 4m4-4 4 4M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </label>
+            <input type="file" id="portrait-file" accept="image/png,image/jpeg,image/webp,image/gif" hidden>
+          </div>
+        </div>
+      </article>
+    </section>
+
+  </main>
+
+  <div class="savebar" id="savebar" hidden aria-live="polite">
+    <div class="savebar__in">
+      <span class="savebar__msg" id="save-msg">تغییرات ذخیره‌نشده دارید</span>
+      <button class="pill pill--glass" type="button" id="discard"><span>انصراف</span></button>
+      <button class="pill pill--accent" type="button" id="save"><span>ذخیره و انتشار</span></button>
+    </div>
+  </div>
+
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+
+  <div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal__bg" data-close></div>
+    <div class="modal__box">
+      <h3 class="modal__title" id="modal-title"></h3>
+      <p class="modal__text" id="modal-text"></p>
+      <div class="modal__btns">
+        <button class="pill pill--glass" type="button" id="modal-no"><span>انصراف</span></button>
+        <button class="pill pill--accent" type="button" id="modal-yes"><span>تأیید</span></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../vendor/supabase.js"></script>
+  <script src="../config.js"></script>
+  <script src="../store.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

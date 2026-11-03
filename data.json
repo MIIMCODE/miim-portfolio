@@ -1,0 +1,187 @@
+{
+  "content": {
+    "brand": "رسانه میم",
+    "name": "مجتبی میدانی",
+    "roleFa": "طراح گرافیک و وب دیزاینر",
+    "roleEn": "Graphic & Web Designer",
+    "heroGreet": "سلام، من مجتبیام",
+    "heroPhoto": "assets/portrait.svg",
+    "navHero": "خانه",
+    "navAbout": "درباره",
+    "navWorks": "آثار",
+    "navContact": "تماس",
+    "aboutEyebrow": "درباره‌ی من",
+    "aboutHeading": "طراحی می‌کنم تا دیده شوی",
+    "aboutText": "من مجتبی میدانی هستم؛ طراح گرافیک و وب دیزاینر با تمرکز روی هویت بصری، رابط کاربری و روایت تصویری. از یک ایده‌ی خام تا اجرای نهایی، کنار پروژه می‌مانم تا نتیجه ساده، دقیق و به‌یادماندنی باشد. باور دارم طراحی خوب فقط زیبا نیست؛ باید پیام را روشن برساند و حس درستی بسازد.",
+    "expHeading": "مسیر تجربه",
+    "experiences": [
+      {
+        "role": "طراح گرافیک مستقل",
+        "place": "رسانه میم",
+        "period": "۱۴۰۲ — اکنون"
+      },
+      {
+        "role": "طراح وب و رابط کاربری",
+        "place": "پروژه‌های آزاد",
+        "period": "۱۴۰۰ — اکنون"
+      },
+      {
+        "role": "عکاس و تدوین‌گر",
+        "place": "همکاری با برندها",
+        "period": "۱۳۹۹ — اکنون"
+      }
+    ],
+    "stats": [
+      {
+        "label": "اثر منتخب",
+        "value": 24,
+        "suffix": "+"
+      },
+      {
+        "label": "سال تجربه",
+        "value": 6,
+        "suffix": ""
+      },
+      {
+        "label": "نرم‌افزار تخصصی",
+        "value": 4,
+        "suffix": ""
+      }
+    ],
+    "skillsEyebrow": "مهارت‌ها",
+    "skillsHeading": "ابزارهایی که با آن‌ها می‌سازم",
+    "worksEyebrow": "گالری آثار",
+    "worksHeading": "نمونه‌ای از کارها",
+    "ctaText": "پروژه‌ای در ذهن داری؟ بیا درباره‌اش حرف بزنیم.",
+    "ctaButton": "شروع گفتگو",
+    "contactEyebrow": "تماس",
+    "contactHeading": "بیا در ارتباط باشیم",
+    "contactLead": "برای همکاری، سفارش طراحی یا فقط یک گفتگوی دوستانه، در دسترس هستم.",
+    "footerLegal": "© رسانه میم — تمامی حقوق محفوظ است. طراحی و توسعه با دقت و وسواس."
+  },
+  "contact": {
+    "phone": "09399887950",
+    "socialId": "Resane_miim",
+    "email": "resane.Miim@gmail.com",
+    "platforms": [
+      {
+        "key": "instagram",
+        "label": "اینستاگرام",
+        "url": "https://instagram.com/Resane_miim"
+      },
+      {
+        "key": "telegram",
+        "label": "تلگرام",
+        "url": "https://t.me/Resane_miim"
+      },
+      {
+        "key": "whatsapp",
+        "label": "واتساپ",
+        "url": "https://wa.me/989399887950"
+      },
+      {
+        "key": "behance",
+        "label": "بهانس",
+        "url": ""
+      },
+      {
+        "key": "linkedin",
+        "label": "لینکدین",
+        "url": ""
+      },
+      {
+        "key": "youtube",
+        "label": "یوتیوب",
+        "url": ""
+      }
+    ]
+  },
+  "skills": [
+    {
+      "name": "Photoshop",
+      "percent": 88
+    },
+    {
+      "name": "Illustrator",
+      "percent": 76
+    },
+    {
+      "name": "Premiere Pro",
+      "percent": 70
+    },
+    {
+      "name": "Figma",
+      "percent": 82
+    },
+    {
+      "name": "Lightroom",
+      "percent": 68
+    }
+  ],
+  "works": [
+    {
+      "title": "وب‌سایت استودیو نور",
+      "category": "طراحی وب",
+      "description": "طراحی رابط کاربری و پیاده‌سازی وب‌سایت استودیو نور با تمرکز روی سادگی و سرعت.",
+      "imageUrl": "assets/work-1.svg",
+      "sortOrder": 1,
+      "isPublished": true
+    },
+    {
+      "title": "هویت بصری آفتاب",
+      "category": "گرافیک",
+      "description": "طراحی لوگو، رنگ‌بندی و ست اداری برند آفتاب.",
+      "imageUrl": "assets/work-2.svg",
+      "sortOrder": 2,
+      "isPublished": true
+    },
+    {
+      "title": "کمپین تبلیغاتی رها",
+      "category": "گرافیک",
+      "description": "ست بنر و استوری برای کمپین معرفی محصول جدید.",
+      "imageUrl": "assets/work-3.svg",
+      "sortOrder": 3,
+      "isPublished": true
+    },
+    {
+      "title": "پوستر رویداد مدیا",
+      "category": "گرافیک",
+      "description": "پوستر اصلی رویداد مدیا با رویکرد مینیمال و تایپوگرافی فارسی.",
+      "imageUrl": "assets/work-4.svg",
+      "sortOrder": 4,
+      "isPublished": true
+    },
+    {
+      "title": "عکاسی محصول آرکا",
+      "category": "عکاسی",
+      "description": "عکاسی محصول و رتوش مجموعه‌ی آرکا.",
+      "imageUrl": "assets/work-5.svg",
+      "sortOrder": 5,
+      "isPublished": true
+    },
+    {
+      "title": "تیزر برند مانا",
+      "category": "تدوین",
+      "description": "تدوین و صداگذاری تیزر معرفی برند مانا.",
+      "imageUrl": "assets/work-6.svg",
+      "sortOrder": 6,
+      "isPublished": true
+    },
+    {
+      "title": "پوستر نمایشگاه هنر",
+      "category": "گرافیک",
+      "description": "طراحی پوستر و کارت دعوت نمایشگاه هنر.",
+      "imageUrl": "assets/work-7.svg",
+      "sortOrder": 7,
+      "isPublished": true
+    },
+    {
+      "title": "وب‌سایت کافه رُز",
+      "category": "طراحی وب",
+      "description": "طراحی و توسعه‌ی وب‌سایت کافه رُز با منوی تعاملی.",
+      "imageUrl": "assets/work-8.svg",
+      "sortOrder": 8,
+      "isPublished": true
+    }
+  ]
+}
