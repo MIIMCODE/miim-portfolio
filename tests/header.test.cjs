@@ -78,15 +78,21 @@ test('the header spies on scroll once per animation frame and never reads layout
   assert.match(source, /function requestAnimationFrame|requestAnimationFrame\(spy\)/);
 });
 
-test('phones get a hamburger sheet instead of a horizontally scrolling strip', () => {
+test('the header strip wraps on narrow screens instead of scrolling sideways', () => {
   const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
-  assert.match(html, /id="nav-toggle"[^>]*aria-expanded="false"[^>]*aria-controls="nav-menu"/);
-  assert.match(html, /id="nav-menu"/);
-  const mobile = css.slice(css.indexOf('@media (max-width: 760px) {\n  .nav { position: relative;'));
-  assert.match(mobile, /\.nav__menu \{[^}]*display: none/);
-  assert.match(mobile, /\.nav--open \.nav__menu \{ display: flex; \}/);
-  assert.match(mobile, /\.nav__pill \{ display: none; \}/);
-  assert.match(source, /function initNavToggle\(\)/);
+  assert.doesNotMatch(html, /nav__toggle/);                 // no hamburger, the real header stays
+  const menu = css.match(/\.nav__menu \{[^}]*\}/)[0];
+  assert.match(menu, /flex-wrap: wrap/);
+  assert.doesNotMatch(menu, /overflow-x: auto/);
+  assert.match(css, /\.nav__link \{[\s\S]*?font-size: clamp\(/);   // sizes scale with the viewport
+  assert.match(css, /\.nav__brand \{\s*width: clamp\(/);
+  assert.match(css, /\.nav__tool \{\s*width: clamp\(/);
+  assert.doesNotMatch(css, /--open/);
+});
+
+test('the sliding pill follows a link onto a second row', () => {
+  assert.match(source, /y: link\.offsetTop/);
+  assert.match(source, /translate\(\$\{box\.x\}px, \$\{box\.y\}px\)/);
 });
 
 test('no frosted glass is left anywhere: every backdrop blur re-renders on scroll', () => {

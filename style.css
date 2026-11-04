@@ -420,7 +420,8 @@ html.is-ready .site-header {
   border-color: var(--stroke-hi);
 }
 .nav__brand {
-  width: 38px; height: 38px;
+  width: clamp(28px, 2.2vw + 22px, 38px);
+  height: clamp(28px, 2.2vw + 22px, 38px);
   border-radius: 50%;
   display: grid;
   place-items: center;
@@ -442,23 +443,24 @@ html.is-ready .site-header {
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;              /* narrow screens wrap onto a second line instead of scrolling */
+  min-width: 0;
   gap: 2px;
-  overflow-x: auto;
-  scrollbar-width: none;
 }
 .nav__menu::-webkit-scrollbar { display: none; }
 
 /* قرص لغزنده مایع پشت لینک‌های منو */
 .nav__pill {
   position: absolute;
-  top: 2px; bottom: 2px;
-  left: 0; right: auto;
-  width: 0;
+  top: 0; left: 0;
+  width: 0; height: 0;
+  right: auto;
   border-radius: 999px;
   background: linear-gradient(135deg, var(--gold-soft-2), rgba(224, 175, 83, 0.09));
   border: 1px solid var(--stroke-hi);
   box-shadow: 0 6px 22px -6px var(--gold-glow), inset 0 1px 0 rgba(255, 255, 255, 0.16);
-  transition: transform 0.32s var(--ease-out), width 0.32s var(--ease-out), opacity 0.2s ease;
+  transition: transform 0.32s var(--ease-out), width 0.32s var(--ease-out), height 0.32s var(--ease-out), opacity 0.2s ease;
   will-change: transform;
   pointer-events: none;
   opacity: 0;
@@ -467,9 +469,9 @@ html.is-ready .site-header {
   position: relative;
   z-index: 1;
   display: block;
-  padding: 8px 15px;
+  padding: 8px clamp(6px, 1.15vw, 15px);
   border-radius: 999px;
-  font-size: 13.5px;
+  font-size: clamp(11.2px, 0.42vw + 9.6px, 13.5px);
   font-weight: 500;
   color: var(--txt-2);
   white-space: nowrap;
@@ -490,7 +492,8 @@ html.is-ready .site-header {
   border-inline-start: 1px solid var(--stroke);
 }
 .nav__tool {
-  width: 35px; height: 35px;
+  width: clamp(29px, 2vw + 22px, 35px);
+  height: clamp(29px, 2vw + 22px, 35px);
   border-radius: 50%;
   border: 1px solid transparent;
   background: transparent;
@@ -1955,64 +1958,21 @@ img, picture, .stage-card, .work-tile, .portrait-arch, .case-modal__media {
   .word-inner { filter: none; transition: transform 0.7s var(--ease-cinema), opacity 0.6s var(--ease-out); }
 }
 
-/* ---------- هدر موبایل: منوی همبرگری به‌جای اسکرول افقی ---------- */
-.nav__toggle {
-  display: none;
-  width: 34px; height: 34px;
-  flex-shrink: 0;
-  place-items: center;
-  gap: 3.5px;
-  border-radius: 50%;
-  border: 1px solid var(--stroke);
-  background: transparent;
-  color: var(--txt-1);
-  cursor: pointer;
-  transition: color 0.25s, border-color 0.25s, background-color 0.25s;
+/* ---------- هدر کپسولی: در هر عرضی کامل دیده می‌شود، بدون اسکرول افقی ---------- */
+@media (max-width: 560px) {
+  .nav { gap: 4px; padding: 6px 7px; border-radius: 22px; }
+  .nav__menu { column-gap: 1px; row-gap: 1px; }
+  .nav__link { padding: 7px 6px; }
+  .nav__extra { gap: 3px; padding-inline-start: 3px; }
+  .nav__tool.nav__admin { min-width: 0; padding-inline: 7px; gap: 4px; font-size: 10px; }
 }
-.nav__toggle i {
-  display: block;
-  width: 15px; height: 1.6px;
-  border-radius: 2px;
-  background: currentColor;
-  transition: transform 0.26s var(--ease-out), opacity 0.18s linear;
-}
-.nav__toggle:hover { color: var(--gold); border-color: var(--stroke-hi); }
-.nav__toggle:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
-
-@media (max-width: 760px) {
-  .nav { position: relative; width: 100%; justify-content: space-between; }
-  .nav__toggle { display: grid; }
-  .nav--open .nav__toggle i:nth-child(1) { transform: translateY(4.4px) rotate(45deg); }
-  .nav--open .nav__toggle i:nth-child(2) { opacity: 0; }
-  .nav--open .nav__toggle i:nth-child(3) { transform: translateY(-4.4px) rotate(-45deg); }
-
-  /* The old horizontally scrolling strip becomes a dropdown sheet. */
-  .nav__menu {
-    display: none;
-    position: absolute;
-    top: calc(100% + 8px);
-    right: 0; left: 0;
-    z-index: 3;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 2px;
-    padding: 7px;
-    overflow: visible;
-    border-radius: 20px;
-    background: var(--nav-solid);
-    border: 1px solid var(--stroke);
-    box-shadow: 0 26px 60px -22px rgba(0, 0, 0, 0.55);
-  }
-  .nav--open .nav__menu { display: flex; }
-  .nav__menu .nav__link {
-    padding: 12px 14px;
-    border-radius: 14px;
-    font-size: 13.5px;
-    text-align: start;
-  }
-  .nav__menu .nav__link.is-active { background: var(--gold-soft); }
-  .nav__menu .nav__link:hover { background: var(--gold-soft); }
-  .nav__pill { display: none; }
+@media (max-width: 380px) {
+  .nav { padding: 5px 6px; gap: 3px; }
+  .nav__link { padding: 6px 5px; font-size: 10.6px; }
+  .nav__brand { width: 26px; height: 26px; padding: 4px; }
+  .nav__tool { width: 26px; height: 26px; }
+  .nav__tool.nav__admin { width: 26px; padding: 0; }
+  .nav__tool.nav__admin span { display: none; }   /* icon stays, the label is read by screen readers */
 }
 
 /* Anchor targets must clear the floating header, whichever link was clicked. */

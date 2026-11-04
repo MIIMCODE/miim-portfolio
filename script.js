@@ -560,7 +560,7 @@ const DEFAULT_SITE = {
       const href = link.getAttribute("href") || "";
       return { id: href.slice(1), link, section: $(href), top: null };
     });
-    const boxes = links.map(() => ({ x: 0, w: 0 }));
+    const boxes = links.map(() => ({ x: 0, y: 0, w: 0, h: 0 }));
     let maxScroll = 1;
     let currentId = null;
     let previewed = null;
@@ -577,7 +577,8 @@ const DEFAULT_SITE = {
       const box = boxes[links.indexOf(link)];
       if (!box || !box.w) return;
       pill.style.width = box.w + "px";
-      pill.style.transform = `translateX(${box.x}px)`;
+      if (box.h) pill.style.height = box.h + "px";   // rows can wrap on phones
+      pill.style.transform = `translate(${box.x}px, ${box.y}px)`;
       pill.style.opacity = "1";
     };
 
@@ -623,7 +624,9 @@ const DEFAULT_SITE = {
       for (const item of items) {
         item.top = item.section ? Math.round(item.section.getBoundingClientRect().top + window.scrollY) : null;
       }
-      links.forEach((link, i) => { boxes[i] = { x: link.offsetLeft, w: link.offsetWidth }; });
+      links.forEach((link, i) => {
+        boxes[i] = { x: link.offsetLeft, y: link.offsetTop, w: link.offsetWidth, h: link.offsetHeight };
+      });
       if (header) {
         const h = header.getBoundingClientRect().height;
         document.documentElement.style.setProperty("--header-offset", Math.round(h + 18) + "px");
@@ -718,37 +721,6 @@ const DEFAULT_SITE = {
 
     measure();
     queueSpy();
-  }
-
-  /* ---------- منوی همبرگری موبایل (جایگزین نوار اسکرول افقی) ---------- */
-  function initNavToggle() {
-    const nav = $(".nav");
-    const toggle = $("#nav-toggle");
-    const menu = $("#nav-menu");
-    if (!nav || !toggle || !menu) return;
-
-    const desktop = window.matchMedia("(min-width: 761px)");
-    const isOpen = () => nav.classList.contains("nav--open");
-    const setOpen = (open, refocus) => {
-      if (open === isOpen()) return;
-      nav.classList.toggle("nav--open", open);
-      toggle.setAttribute("aria-expanded", open ? "true" : "false");
-      toggle.setAttribute("aria-label", open ? "بستن منو" : "باز کردن منو");
-      if (!open && refocus) toggle.focus();
-    };
-
-    toggle.addEventListener("click", () => setOpen(!isOpen()));
-    menu.addEventListener("click", (e) => {
-      if (e.target instanceof Element && e.target.closest(".nav__link")) setOpen(false);
-    });
-    document.addEventListener("pointerdown", (e) => {
-      if (isOpen() && e.target instanceof Node && !nav.contains(e.target)) setOpen(false);
-    }, { passive: true });
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && isOpen()) setOpen(false, true);
-    });
-    window.addEventListener("scroll", () => { if (isOpen()) setOpen(false); }, { passive: true });
-    desktop.addEventListener("change", () => { if (desktop.matches) setOpen(false); });
   }
 
   /* ---------- بودجه‌ی حرکت: بخش‌های بیرون از دید انیمیشن اجرا نمی‌کنند ---------- */
@@ -1632,7 +1604,6 @@ const DEFAULT_SITE = {
     initTheme();
     renderAll();
     initSmoothHeader();
-    initNavToggle();
     initMotionBudget();
     initWorksInteractions();
     initOrderAndCopy();
