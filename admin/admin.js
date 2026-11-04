@@ -822,7 +822,7 @@
       row.className = "stat-row";
       row.dataset.index = String(index);
       const label = makeInput("", stat.label, "برچسب (مثلاً اثر منتخب)", "text", { "data-field": "label", maxlength: "40" });
-      const value = makeInput("stat-value", stat.value, "عدد", "number", { "data-field": "value", min: "0", max: "9999", step: "1" });
+      const value = makeInput("stat-value", stat.value, "عدد", "number", { "data-field": "value", min: "0", max: "99999", step: "1" });
       const suffix = makeInput("stat-suffix", stat.suffix, "پسوند", "text", { "data-field": "suffix", maxlength: "4" });
       const remove = makeButton("icon-btn is-danger", ICONS.close, "حذف آمار");
       remove.dataset.action = "remove-stat";
@@ -897,7 +897,7 @@
         const field = event.target.dataset.field;
         const stat = state.data.content.stats[index];
         if (!stat || !field) return;
-        stat[field] = field === "value" ? Math.max(0, Math.min(9999, Math.round(Number(event.target.value) || 0))) : event.target.value;
+        stat[field] = field === "value" ? Math.max(0, Math.min(99999, Math.round(Number(event.target.value) || 0))) : event.target.value;
         markDirty("content");
       });
       statsEditor.addEventListener("click", (event) => {
@@ -982,7 +982,14 @@
         state.data.skills = cleaned;
         await Store.replaceSkills(cleaned);
       }
-      if (state.dirty.content) await Store.saveContent(state.data.content);
+      if (state.dirty.content) {
+        // متن‌ها در سند JSON، و تجربه‌ها/شمارنده‌ها در جدول‌های اختصاصی ذخیره می‌شوند
+        await Store.saveContent(state.data.content);
+        const experiences = (state.data.content.experiences || []).filter((x) => String(x.role || "").trim());
+        if (experiences.length) await Store.replaceExperiences(experiences);
+        const stats = (state.data.content.stats || []).filter((x) => String(x.label || "").trim());
+        if (stats.length) await Store.replaceStats(stats);
+      }
       state.dirty = { contact: false, skills: false, content: false };
       updateSavebar();
       await loadAll(true);

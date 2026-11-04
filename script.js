@@ -47,6 +47,8 @@
     behance: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="5" width="19" height="14" rx="3"/><text x="12" y="15.6" text-anchor="middle" font-family="Tahoma, sans-serif" font-size="7.5" font-weight="700" fill="currentColor" stroke="none">Bē</text></svg>',
     youtube: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="m10 9 5 3-5 3z" fill="currentColor" stroke="none"/></svg>',
     link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>',
+    dribbble: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M5 8c4 1.5 9 1.5 13 0M4 14c4-1.5 9-1 12 2M9 3.5c3 4 4.5 9 4.5 16"/></svg>',
+    x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 4l16 16M20 4L4 20"/></svg>',
   };
 
   /* ---------- لودر ---------- */
@@ -681,6 +683,13 @@
     initMagnetic();
     initCarousel();
     initLightbox();
+
+    // نمایش فوری skeleton محتوا از seed تا کاربر معطل شبکه نماند
+    try {
+      if (Store.getInitialState) renderAll();
+    } catch (e) {
+      console.warn("[site] initial render", e);
+    }
 
     try {
       await Store.loadSite();
