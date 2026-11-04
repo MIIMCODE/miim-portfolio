@@ -4,8 +4,11 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 const path = require('node:path');
 const read = file => fs.readFileSync(path.join(__dirname, '..', file), 'utf8');
-function setup(result = { data: { data: {}, revision: 3 }, error: null }) {
+function setup(result = { data: { data: {}, revision: 3 }, error: null }, sessionToken = 'session-jwt') {
   const requests = [];
+  const calls = [];
+  let botResponse = { ok: true, status: 200, json: async () => ({ ok: true, configured: true, paired: false }) };
+  const fetchStub = async (url, options) => { calls.push(['fetch', url, options]); return botResponse; };
   const query = {
     update(body) { requests.push(['update', body]); return this; },
     select(fields) { requests.push(['select', fields]); return this; },
@@ -17,13 +20,14 @@ function setup(result = { data: { data: {}, revision: 3 }, error: null }) {
   const fake = {
     from(table) { requests.push(['from', table]); return query; },
     auth: {
+      async getSession() { return { data: { session: sessionToken ? { access_token: sessionToken } : null } }; },
       async signInWithPassword(body) { requests.push(['login', body]); return { data: { session: { user: { email: body.email } } }, error: null }; },
       async resetPasswordForEmail(email, options) { requests.push(['recover', email, options]); return {}; },
     },
   };
-  const context = vm.createContext({ window: {}, AbortSignal, createClient: () => fake });
+  const context = vm.createContext({ window: {}, AbortSignal, fetch: fetchStub, createClient: () => fake });
   vm.runInContext(read('lib/cloud.js').replace(/^import .*?;$/m, ''), context);
-  return { cloud: context.window.MiimCloud, requests };
+  return { cloud: context.window.MiimCloud, requests, calls, setBotResponse: value => { botResponse = value; } };
 }
 test('cloud saves strip legacy password hashes and compare server revision', async () => {
   const { cloud, requests } = setup();
@@ -86,4 +90,31 @@ test('migration isolates app tables and enforces verified-email RLS without user
   assert.match(sql, /with check \(public\.miim_is_admin\(\)\)/);
   assert.doesNotMatch(sql, /user_metadata/);
   assert.doesNotMatch(sql, /alter table public\.(projects|services|contact_messages)/);
+});
+
+test('bot calls go straight to the dedicated bot project, carrying the panel session', async () => {
+  const { cloud, calls } = setup();
+  const result = await cloud.bot('status');
+  assert.equal(result.configured, true);
+  const [kind, url, options] = calls[0];
+  assert.equal(kind, 'fetch');
+  assert.equal(url, 'https://icpuwsultralrxbeukqw.supabase.co/functions/v1/miim-rubika');
+  assert.equal(options.method, 'POST');
+  assert.equal(options.headers.apikey, 'sb_publishable_KLT4wcuY_lHjx_FtxL6rcw_GStiNtVe');
+  assert.equal(options.headers.Authorization, 'Bearer session-jwt');
+  assert.deepEqual(JSON.parse(options.body), { action: 'status' });
+});
+test('bot stays usable for anonymous visitors: an order is sent without a session', async () => {
+  const { cloud, calls } = setup(undefined, null);
+  await cloud.bot('order', { name: 'مشتری', phone: '09123456789' });
+  const [, , options] = calls[0];
+  assert.equal('Authorization' in options.headers, false);
+  assert.equal(JSON.parse(options.body).action, 'order');
+});
+test('bot failures surface the mapped message instead of a raw status code', async () => {
+  const { cloud, setBotResponse } = setup();
+  setBotResponse({ ok: false, status: 403, json: async () => ({ ok: false, error: 'origin_not_allowed' }) });
+  await assert.rejects(cloud.bot('status'), /دامنهٔ سایت/);
+  setBotResponse({ ok: false, status: 500, json: async () => { throw new SyntaxError('bad body'); } });
+  await assert.rejects(cloud.bot('status'), /ارتباط با سرویس سفارش/);
 });
