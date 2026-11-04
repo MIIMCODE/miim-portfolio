@@ -86,6 +86,10 @@ test('the header strip wraps on narrow screens instead of scrolling sideways', (
   assert.doesNotMatch(menu, /overflow-x: auto/);
   assert.match(css, /\.nav__link \{[\s\S]*?font-size: clamp\(/);   // sizes scale with the viewport
   assert.match(css, /\.nav__brand \{\s*width: clamp\(/);
+  // phones: the links always get a row of their own, so nothing can spill out of the capsule
+  const phone = css.slice(css.indexOf('@media (max-width: 640px)'));
+  assert.match(phone, /\.nav \{[^}]*width: 100%[^}]*flex-wrap: wrap/);
+  assert.match(phone, /\.nav__menu \{[^}]*flex: 1 0 100%/);
   assert.match(css, /\.nav__tool \{\s*width: clamp\(/);
   assert.doesNotMatch(css, /--open/);
 });

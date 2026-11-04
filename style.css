@@ -1958,21 +1958,37 @@ img, picture, .stage-card, .work-tile, .portrait-arch, .case-modal__media {
   .word-inner { filter: none; transition: transform 0.7s var(--ease-cinema), opacity 0.6s var(--ease-out); }
 }
 
-/* ---------- هدر کپسولی: در هر عرضی کامل دیده می‌شود، بدون اسکرول افقی ---------- */
-@media (max-width: 560px) {
-  .nav { gap: 4px; padding: 6px 7px; border-radius: 22px; }
-  .nav__menu { column-gap: 1px; row-gap: 1px; }
-  .nav__link { padding: 7px 6px; }
-  .nav__extra { gap: 3px; padding-inline-start: 3px; }
-  .nav__tool.nav__admin { min-width: 0; padding-inline: 7px; gap: 4px; font-size: 10px; }
+/* ---------- هدر کپسولی: در هر عرضی کامل دیده می‌شود، بدون سرریز افقی ---------- */
+@media (max-width: 640px) {
+  /* دو ردیف قطعی: ردیف اول لوگو + ابزارها، ردیف دوم لینک‌ها با عرض کامل.
+     این‌طوری هیچ‌وقت محتوا از کپسول بیرون نمی‌زند، چون لینک‌ها در عرض خودشان می‌پیچند. */
+  .nav {
+    width: 100%;
+    max-width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 4px;
+    padding: 6px 8px;
+    border-radius: 20px;
+  }
+  .nav__menu {
+    order: 3;
+    flex: 1 0 100%;          /* ردیف اختصاصی لینک‌ها */
+    min-width: 0;
+    column-gap: 1px;
+    row-gap: 1px;
+  }
+  .nav__link { padding: 6px; font-size: 11px; line-height: 1.45; }
+  .nav__extra { border-inline-start: 0; padding-inline-start: 0; gap: 4px; }
+  .nav__tool.nav__admin { min-width: 0; padding-inline: 8px; gap: 4px; font-size: 10px; }
 }
 @media (max-width: 380px) {
-  .nav { padding: 5px 6px; gap: 3px; }
+  .nav { padding: 5px 6px; }
   .nav__link { padding: 6px 5px; font-size: 10.6px; }
   .nav__brand { width: 26px; height: 26px; padding: 4px; }
   .nav__tool { width: 26px; height: 26px; }
   .nav__tool.nav__admin { width: 26px; padding: 0; }
-  .nav__tool.nav__admin span { display: none; }   /* icon stays, the label is read by screen readers */
+  .nav__tool.nav__admin span { display: none; }   /* آیکون می‌ماند، برچسب برای صفحه‌خوان‌ها هست */
 }
 
 /* Anchor targets must clear the floating header, whichever link was clicked. */
