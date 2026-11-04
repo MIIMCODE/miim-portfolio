@@ -1,6 +1,11 @@
 // No tokens, chat IDs or customer data are logged or returned to public clients.
 export function createHandler({ env, fetch: request = fetch, crypto: crypt = crypto, now = () => Date.now() }) {
   const base = env('SUPABASE_URL'), key = env('SUPABASE_SERVICE_ROLE_KEY');
+  // Optional: verify control-room sessions against another project (bot-only projects).
+  const authBase = (env('MIIM_AUTH_PROJECT_URL') || base || '').replace(/\/+$/, '');
+  const authKey = env('MIIM_AUTH_ANON_KEY') || key;
+  const adminEmails = new Set((env('MIIM_ADMIN_EMAILS') || 'resane.miim@gmail.com')
+    .split(',').map(value => value.trim().toLowerCase()).filter(Boolean));
   const token = env('RUBIKA_BOT_TOKEN');
   // Both the current Pages host and the previous one; MIIM_ALLOWED_ORIGINS adds exact origins only.
   const origins = new Set(['https://miimcode.github.io', 'https://miimdev.github.io',
@@ -21,13 +26,21 @@ export function createHandler({ env, fetch: request = fetch, crypto: crypt = cry
   async function manager(req) {
     const authorization = req.headers.get('authorization') || '';
     if (!/^Bearer [^ ]+$/i.test(authorization)) fail(401, 'sign_in_required');
-    // Validate server-side against Auth and the existing verified-email manager RPC.
-    const headers = { apikey: key, Authorization: authorization, 'Content-Type': 'application/json' };
-    const user = await request(base + '/auth/v1/user', { headers, signal: AbortSignal.timeout(8000) });
+    // The session may come from another project (the one the control room signs in to).
+    const headers = { apikey: authKey, Authorization: authorization, 'Content-Type': 'application/json' };
+    const user = await request(authBase + '/auth/v1/user', { headers, signal: AbortSignal.timeout(8000) });
     if (!user.ok) fail(401, 'sign_in_required');
     const account = await user.json();
-    const check = await request(base + '/rest/v1/rpc/miim_is_admin', { method: 'POST', headers, body: '{}', signal: AbortSignal.timeout(8000) });
-    if (!check.ok || await check.json() !== true || !account.id) fail(403, 'manager_required');
+    if (!account?.id) fail(401, 'sign_in_required');
+    // Preferred check: this project's manager RPC. Fallback: the owner's verified email,
+    // so the bot can also live in a project that has no manager RPC of its own.
+    let allowed = false;
+    try {
+      const check = await request(base + '/rest/v1/rpc/miim_is_admin', { method: 'POST', headers: { ...headers, apikey: key }, body: '{}', signal: AbortSignal.timeout(8000) });
+      allowed = check.ok && await check.json() === true;
+    } catch { allowed = false; }
+    if (!allowed && account.email) allowed = adminEmails.has(String(account.email).toLowerCase());
+    if (!allowed) fail(403, 'manager_required');
     return account.id;
   }
   async function bot(method, body = {}) {
