@@ -533,69 +533,186 @@ const DEFAULT_SITE = {
     $("#footer-year").textContent = `سال ${fa(faYear)} خورشیدی`;
   }
 
-  /* ---------- هدر کپسولی نرم با قرص لغزنده مایع (دقیقاً حس نرم قبلی) ---------- */
+  /* ---------- انتخاب بخش فعال (تابع خالص، بدون دسترسی به DOM) ---------- */
+  function pickActiveSection(tops, probe, atBottom, fallback) {
+    let id = fallback;
+    for (const item of tops) {
+      if (item.top === null || item.top === undefined) continue;
+      if (probe >= item.top) id = item.id;
+    }
+    if (atBottom) {
+      for (const item of tops) if (item.top !== null && item.top !== undefined) id = item.id;
+    }
+    return id;
+  }
+
+  /* ---------- هدر کپسولی: هندسه‌ی کش‌شده، scroll-spy با rAF و قرص بدون layout thrash ---------- */
   function initSmoothHeader() {
+    const header = $(".site-header");
     const menu = $(".nav__menu");
     const pill = $(".nav__pill");
+    const nav = $(".nav");
     const links = $$(".nav__link");
-    const sections = links.map((l) => $(l.getAttribute("href"))).filter(Boolean);
+    if (!links.length) return;
 
-    const movePill = (link) => {
-      if (!link || !menu || !pill) { if (pill) pill.style.opacity = "0"; return; }
-      const mr = menu.getBoundingClientRect();
-      const lr = link.getBoundingClientRect();
-      const offset = mr.right - lr.right;
-      pill.style.width = lr.width + "px";
-      pill.style.transform = `translateX(${-offset}px)`;
-      pill.style.opacity = "1";
-    };
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const items = links.map((link) => {
+      const href = link.getAttribute("href") || "";
+      return { id: href.slice(1), link, section: $(href), top: null };
+    });
+    const boxes = links.map(() => ({ x: 0, w: 0 }));
+    let maxScroll = 1;
+    let currentId = null;
+    let previewed = null;
+    let lockedId = null;
+    let lockTimer = 0;
+    let spyQueued = false;
+    let measureQueued = false;
 
     const activeLink = () => links.find((l) => l.classList.contains("is-active")) || links[0];
 
-    const setActive = (id) => {
-      links.forEach((l) => l.classList.toggle("is-active", l.dataset.nav === id));
-      movePill(activeLink());
+    /* style writes only (no layout reads) */
+    const paintPill = (link) => {
+      if (!pill || !link) return;
+      const box = boxes[links.indexOf(link)];
+      if (!box || !box.w) return;
+      pill.style.width = box.w + "px";
+      pill.style.transform = `translateX(${box.x}px)`;
+      pill.style.opacity = "1";
     };
 
-    // پیش‌نمایش لغزش قرص هنگام هاور ماوس روی آیتم‌ها
-    links.forEach((l) => {
-      l.addEventListener("pointerenter", () => movePill(l));
-      l.addEventListener("click", (e) => {
-        const target = $(l.getAttribute("href"));
-        if (!target) return;
+    const setActive = (id) => {
+      if (!id || id === currentId) return false;
+      currentId = id;
+      for (const l of links) {
+        const on = l.dataset.nav === id;
+        l.classList.toggle("is-active", on);
+        if (on) l.setAttribute("aria-current", "true");
+        else l.removeAttribute("aria-current");
+      }
+      // On narrow screens the menu scrolls horizontally: keep the active pill reachable.
+      if (menu && menu.scrollWidth > menu.clientWidth + 4) {
+        const link = links.find((l) => l.dataset.nav === id);
+        link?.scrollIntoView({ block: "nearest", inline: "center" });
+      }
+      return true;
+    };
+
+    /* one rAF per scroll burst; reads scrollY only, never the layout */
+    const spy = () => {
+      spyQueued = false;
+      if (document.hidden || lockedId) return;
+      const hadPreview = previewed !== null;
+      previewed = null;                                  // scrolling wins over the hover preview
+      const y = window.scrollY;
+      const id = pickActiveSection(items, y + window.innerHeight * 0.38, y >= maxScroll - 4, items[0]?.id || "hero");
+      const changed = setActive(id);
+      if (changed || hadPreview) paintPill(activeLink());
+    };
+
+    const queueSpy = () => {
+      if (spyQueued || lockedId) return;
+      spyQueued = true;
+      requestAnimationFrame(spy);
+    };
+
+    /* the only routine that forces layout: resize / font load / content resize */
+    const measure = () => {
+      measureQueued = false;
+      maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      for (const item of items) {
+        item.top = item.section ? Math.round(item.section.getBoundingClientRect().top + window.scrollY) : null;
+      }
+      links.forEach((link, i) => { boxes[i] = { x: link.offsetLeft, w: link.offsetWidth }; });
+      if (header) {
+        const h = header.getBoundingClientRect().height;
+        document.documentElement.style.setProperty("--header-offset", Math.round(h + 18) + "px");
+      }
+      paintPill(previewed || activeLink());
+    };
+
+    const queueMeasure = () => {
+      if (measureQueued) return;
+      measureQueued = true;
+      requestAnimationFrame(measure);
+    };
+
+    const releaseLock = () => {
+      clearTimeout(lockTimer);
+      if (!lockedId) return;
+      lockedId = null;
+      queueMeasure();
+      queueSpy();
+    };
+
+    const jumpTo = (link, target) => {
+      if (!target) return;
+      previewed = link;
+      paintPill(link);
+      setActive(items[links.indexOf(link)].id);          // click wins immediately
+      lockedId = items[links.indexOf(link)].id;          // ...and the spy stays quiet until the scroll ends
+      clearTimeout(lockTimer);
+      lockTimer = setTimeout(releaseLock, 1600);
+      const behavior = reduceMotion.matches ? "auto" : "smooth";
+      if (target.id === "hero") window.scrollTo({ top: 0, behavior });
+      else target.scrollIntoView({ behavior, block: "start" });  // the offset comes from CSS scroll-margin-top
+    };
+
+    links.forEach((link, i) => {
+      link.addEventListener("click", (e) => {
+        if (!items[i].section) return;
         e.preventDefault();
-        const top = target.id === "hero" ? 0 : target.getBoundingClientRect().top + window.scrollY - 24;
-        window.scrollTo({ top, behavior: "smooth" });
+        jumpTo(link, items[i].section);
       });
     });
-    menu?.addEventListener("pointerleave", () => movePill(activeLink()));
-    $(".nav__brand")?.addEventListener("click", (e) => {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: "smooth" });
+
+    /* delegated hover/focus preview: cached geometry, so moving the pointer triggers no reflow */
+    menu?.addEventListener("pointerover", (e) => {
+      const link = e.target instanceof Element ? e.target.closest(".nav__link") : null;
+      if (!link || lockedId) return;
+      previewed = link;
+      paintPill(link);
+    });
+    menu?.addEventListener("pointerleave", () => {
+      previewed = null;
+      paintPill(activeLink());
+    });
+    menu?.addEventListener("focusin", (e) => {
+      const link = e.target instanceof Element ? e.target.closest(".nav__link") : null;
+      if (!link) return;
+      previewed = link;
+      paintPill(link);
+    });
+    menu?.addEventListener("focusout", () => {
+      previewed = null;
+      paintPill(activeLink());
     });
 
-    let currentId = null;
-    const spy = () => {
-      const y = window.scrollY + window.innerHeight * 0.38;
-      let id = sections[0]?.id || "hero";
-      for (const s of sections) {
-        const sTop = s.id === "hero" ? 0 : s.getBoundingClientRect().top + window.scrollY;
-        if (y >= sTop) id = s.id;
-      }
-      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4 && sections.length) {
-        id = sections[sections.length - 1].id;
-      }
-      if (id !== currentId) {
-        currentId = id;
-        setActive(id);
-      }
-    };
+    $(".nav__brand")?.addEventListener("click", (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: reduceMotion.matches ? "auto" : "smooth" });
+    });
 
-    window.addEventListener("scroll", spy, { passive: true });
-    window.addEventListener("resize", () => movePill(activeLink()));
-    document.fonts?.ready.then(() => movePill(activeLink()));
-    requestAnimationFrame(spy);
-    setTimeout(() => movePill(activeLink()), 400);
+    window.addEventListener("scroll", queueSpy, { passive: true });
+    window.addEventListener("scrollend", releaseLock, { passive: true });
+    window.addEventListener("resize", queueMeasure);
+    window.addEventListener("orientationchange", queueMeasure);
+    window.addEventListener("load", queueMeasure, { once: true });
+    document.fonts?.ready.then(queueMeasure);
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) return;
+      queueMeasure();
+      queueSpy();
+    });
+    if ("ResizeObserver" in window && nav) {
+      // Fonts, images and cloud content change the nav width and the section offsets.
+      const ro = new ResizeObserver(queueMeasure);
+      ro.observe(nav);
+      ro.observe(document.body);
+    }
+
+    measure();
+    queueSpy();
   }
 
   /* ---------- دکمه‌های مغناطیسی نرم ---------- */
@@ -1289,13 +1406,19 @@ const DEFAULT_SITE = {
     const heroHalo = $("#hero-halo");
     const marqueeTrack = $("#marquee-track");
 
-    toTop?.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+    const calmScroll = () => window.scrollTo({ top: 0, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    toTop?.addEventListener("click", calmScroll);
 
     let lastY = window.scrollY;
     let marqueeX = 0;
     let maxScroll = 1;
     let frameCount = 0;
     let raf = 0;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let heroHeight = hero ? (hero.offsetHeight || window.innerHeight) : 0;
+    let heroStyled = false;
+    const refreshHeroHeight = () => { if (hero) heroHeight = hero.offsetHeight || window.innerHeight; };
+    window.addEventListener("resize", refreshHeroHeight, { passive: true });
 
     // پارالاکس ماوس روی صحنه پرتره هیرو
     let ptx = 0, pty = 0, pcx = 0, pcy = 0;
@@ -1325,27 +1448,41 @@ const DEFAULT_SITE = {
       if (toTop) toTop.classList.toggle("is-visible", y > 500);
 
       // افکت دوربین سینمایی عقب‌نشینی هیرو هنگام بالا آمدن شیت محتوا (دسکتاپ)
-      if (heroSticky && window.innerWidth > 980 && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        const hh = hero.offsetHeight || window.innerHeight;
-        const p = clamp(y / (hh * 0.9), 0, 1);
-        const sc = 1 - p * 0.085;
-        const ty = p * -46;
-        const op = clamp(1 - p * 1.15, 0, 1);
-        heroSticky.style.transform = `translate3d(0, ${ty.toFixed(1)}px, 0) scale(${sc.toFixed(4)})`;
-        heroSticky.style.opacity = op.toFixed(3);
-      } else if (heroSticky) {
+      // Styles are only written while the hero is actually receding, so a scrolled-away hero
+      // stops repainting the layer that sits behind the floating header.
+      if (heroSticky && window.innerWidth > 980 && !reduceMotion.matches) {
+        const p = clamp(y / (heroHeight * 0.9), 0, 1);
+        if (p < 1) {
+          const sc = 1 - p * 0.085;
+          const ty = p * -46;
+          const op = clamp(1 - p * 1.15, 0, 1);
+          heroSticky.style.transform = `translate3d(0, ${ty.toFixed(1)}px, 0) scale(${sc.toFixed(4)})`;
+          heroSticky.style.opacity = op.toFixed(3);
+          heroStyled = true;
+        } else if (heroStyled || !heroSticky.style.opacity) {
+          heroSticky.style.transform = "translate3d(0, -46px, 0) scale(0.9150)";
+          heroSticky.style.opacity = "0";
+          heroStyled = false;
+        }
+      } else if (heroStyled) {
         heroSticky.style.transform = "";
         heroSticky.style.opacity = "";
+        heroStyled = false;
       }
 
       // پارالاکس ۳بعدی چندلایه روی پرتره و آیکون‌های شناور
+      // Only repaint while the pointer easing is still converging; an idle cursor costs nothing.
       if (FINE_POINTER && y < window.innerHeight * 1.2) {
-        pcx = lerp(pcx, ptx, 0.075);
-        pcy = lerp(pcy, pty, 0.075);
-        if (heroPhoto) heroPhoto.style.transform = `translate3d(${(pcx * 14).toFixed(1)}px, ${(pcy * 9).toFixed(1)}px, 0)`;
-        if (heroArch) heroArch.style.transform = `rotateY(${(pcx * 6).toFixed(2)}deg) rotateX(${(-pcy * 5).toFixed(2)}deg)`;
-        if (heroIcons) heroIcons.style.transform = `translate3d(${(-pcx * 18).toFixed(1)}px, ${(-pcy * 12).toFixed(1)}px, 0)`;
-        if (heroHalo) heroHalo.style.transform = `translate3d(${(-pcx * 24).toFixed(1)}px, ${(-pcy * 16).toFixed(1)}px, 0)`;
+        const ncx = lerp(pcx, ptx, 0.075);
+        const ncy = lerp(pcy, pty, 0.075);
+        if (Math.abs(ncx - pcx) > 0.0005 || Math.abs(ncy - pcy) > 0.0005) {
+          pcx = ncx;
+          pcy = ncy;
+          if (heroPhoto) heroPhoto.style.transform = `translate3d(${(pcx * 14).toFixed(1)}px, ${(pcy * 9).toFixed(1)}px, 0)`;
+          if (heroArch) heroArch.style.transform = `rotateY(${(pcx * 6).toFixed(2)}deg) rotateX(${(-pcy * 5).toFixed(2)}deg)`;
+          if (heroIcons) heroIcons.style.transform = `translate3d(${(-pcx * 18).toFixed(1)}px, ${(-pcy * 12).toFixed(1)}px, 0)`;
+          if (heroHalo) heroHalo.style.transform = `translate3d(${(-pcx * 24).toFixed(1)}px, ${(-pcy * 16).toFixed(1)}px, 0)`;
+        }
       }
 
       // حرکت پیوسته Marquee واکنش‌گرا به سرعت اسکرول
