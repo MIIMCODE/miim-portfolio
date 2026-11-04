@@ -77,3 +77,38 @@ test('the header spies on scroll once per animation frame and never reads layout
   assert.doesNotMatch(spy, /getBoundingClientRect|scrollHeight|offsetWidth|offsetTop/);
   assert.match(source, /function requestAnimationFrame|requestAnimationFrame\(spy\)/);
 });
+
+test('phones get a hamburger sheet instead of a horizontally scrolling strip', () => {
+  const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  assert.match(html, /id="nav-toggle"[^>]*aria-expanded="false"[^>]*aria-controls="nav-menu"/);
+  assert.match(html, /id="nav-menu"/);
+  const mobile = css.slice(css.indexOf('@media (max-width: 760px) {\n  .nav { position: relative;'));
+  assert.match(mobile, /\.nav__menu \{[^}]*display: none/);
+  assert.match(mobile, /\.nav--open \.nav__menu \{ display: flex; \}/);
+  assert.match(mobile, /\.nav__pill \{ display: none; \}/);
+  assert.match(source, /function initNavToggle\(\)/);
+});
+
+test('no frosted glass is left anywhere: every backdrop blur re-renders on scroll', () => {
+  assert.equal((css.match(/backdrop-filter:\s*blur/g) || []).length, 0);
+});
+
+test('decorative keyframes never animate layout properties', () => {
+  const sheen = css.match(/@keyframes btn-sheen \{[^}]*\}[^}]*\}/);
+  assert.ok(sheen);
+  assert.doesNotMatch(sheen[0], /\bleft:/);
+  assert.match(sheen[0], /transform/);
+});
+
+test('the scroll loop never measures the marquee during a frame', () => {
+  const loop = source.slice(source.indexOf('const frame = () => {'), source.indexOf('const start = () => {'));
+  const code = loop.replace(/\/\/.*$/gm, '');   // comments mention the old read on purpose
+  assert.doesNotMatch(code, /scrollWidth/);
+  assert.match(source, /measureMarquee/);
+});
+
+test('off-screen sections have their animation budget released', () => {
+  assert.match(source, /data-motion-paused/);
+  assert.match(source, /function initMotionBudget\(\)/);
+  assert.match(css, /\[data-motion-paused\] \*[\s\S]*animation-play-state: paused/);
+});
