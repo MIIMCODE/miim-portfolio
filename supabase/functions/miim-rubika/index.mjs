@@ -2,7 +2,9 @@
 export function createHandler({ env, fetch: request = fetch, crypto: crypt = crypto, now = () => Date.now() }) {
   const base = env('SUPABASE_URL'), key = env('SUPABASE_SERVICE_ROLE_KEY');
   const token = env('RUBIKA_BOT_TOKEN');
-  const origins = new Set(['https://miimdev.github.io', ...(env('MIIM_ALLOWED_ORIGINS') || '').split(',').filter(Boolean)]);
+  // Both the current Pages host and the previous one; MIIM_ALLOWED_ORIGINS adds exact origins only.
+  const origins = new Set(['https://miimcode.github.io', 'https://miimdev.github.io',
+    ...(env('MIIM_ALLOWED_ORIGINS') || '').split(',').map(value => value.trim()).filter(Boolean)]);
   class Failure extends Error { constructor(status, code) { super(code); this.status = status; } }
   const fail = (status, code) => { throw new Failure(status, code); };
   const hash = async value => Array.from(new Uint8Array(await crypt.subtle.digest('SHA-256', new TextEncoder().encode(value))), b => b.toString(16).padStart(2, '0')).join('');

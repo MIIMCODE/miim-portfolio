@@ -55,7 +55,7 @@ async function setup() {
     throw new Error('Unhandled mock '+url);
   };
   const handler=createHandler({env:n=>({SUPABASE_URL:'https://db.test',SUPABASE_SERVICE_ROLE_KEY:'server-secret',RUBIKA_BOT_TOKEN:'bot-secret'}[n]),fetch:mock,crypto:webcrypto,now:()=>now});
-  const send=(body,admin=false,origin='https://miimdev.github.io')=>handler(new Request('https://edge.test',{method:'POST',headers:{'Content-Type':'application/json',...(origin?{Origin:origin}:{}),...(admin?{Authorization:'Bearer valid-manager-jwt'}:{})},body:JSON.stringify(body)}));
+  const send=(body,admin=false,origin='https://miimcode.github.io')=>handler(new Request('https://edge.test',{method:'POST',headers:{'Content-Type':'application/json',...(origin?{Origin:origin}:{}),...(admin?{Authorization:'Bearer valid-manager-jwt'}:{})},body:JSON.stringify(body)}));
   return {handler,send,settings,orders,events,calls,setAuthorized:v=>authorized=v,setBot:v=>botMode=v,setUpdates:v=>updates=v};
 }
 test('public orders are validated and saved privately before pairing, not emailed',async()=>{
@@ -69,11 +69,14 @@ test('reject bad origin, missing origin, invalid body/honeypot, oversized JSON a
   const s=await setup();
   assert.equal((await s.send(valid(),false,'https://evil.test')).status,403);
   assert.equal((await s.send(valid(),false,'')).status,403);
+  // the site lives on miimcode.github.io now; the previous host keeps working
+  assert.equal((await s.send(valid(),false,'https://miimcode.github.io')).status,200);
+  assert.equal((await s.send(valid(),false,'https://miimdev.github.io')).status,200);
   for(const bad of [{phone:'123'},{message:''},{name:'x'.repeat(101)},{website:'spam'},{email:'bad'},{id:'not-uuid'}])assert.equal((await s.send({...valid(),...bad})).status,400);
   assert.equal((await s.send({action:'status'})).status,401);
   s.setAuthorized(false);assert.equal((await s.send({action:'inbox'},true)).status,401);
   assert.equal((await s.send({...valid(),message:'x'.repeat(14000)})).status,413);
-  assert.equal(s.orders.size,0);
+  assert.equal(s.orders.size,2);   // only the two requests from an allowed origin were accepted
 });
 test('authenticated pairing requires exact private-chat challenge, consumes it and never reveals token/chat id',async()=>{
   const s=await setup();

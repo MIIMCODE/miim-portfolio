@@ -46,7 +46,7 @@ test('manager username is resolved to the existing cloud identity, without a cli
   assert.equal(requests[1][1].email, 'resane.miim@gmail.com');
   await cloud.recover('mojtaba');
   assert.equal(requests[2][1], 'resane.miim@gmail.com');
-  assert.equal(requests[2][2].redirectTo, 'https://miimdev.github.io/TEST/admin/');
+  assert.equal(requests[2][2].redirectTo, 'https://miimcode.github.io/miim-portfolio/admin/');
 });
 test('cloud is authoritative and never reads old local drafts', async () => {
   let localReads = 0;
