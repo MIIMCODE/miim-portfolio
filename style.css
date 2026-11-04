@@ -32,6 +32,7 @@
   --surface-2: rgba(28, 28, 38, 0.84);
   --surface-solid: #13131a;
   --nav-bg: rgba(12, 12, 17, 0.72);
+  --nav-solid: rgba(12, 12, 17, 0.94);
 
   --txt-1: #f8f5ef;
   --txt-2: #bbb5a8;
@@ -82,6 +83,7 @@
   --surface-2: rgba(255, 252, 245, 0.95);
   --surface-solid: #ffffff;
   --nav-bg: rgba(252, 249, 244, 0.8);
+  --nav-solid: rgba(252, 249, 244, 0.96);
 
   --txt-1: #161411;
   --txt-2: #4e483f;
@@ -105,6 +107,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html {
   scroll-behavior: smooth;
+  --header-offset: 96px;
   -webkit-text-size-adjust: 100%;
   background: var(--bg-0);
 }
@@ -392,7 +395,7 @@ ul, ol { list-style: none; }
   pointer-events: none;
   opacity: 0;
   transform: translateY(-22px);
-  transition: opacity 0.85s var(--ease-cinema) 0.15s, transform 0.85s var(--ease-cinema) 0.15s;
+  transition: opacity 0.55s var(--ease-cinema) 0.08s, transform 0.55s var(--ease-cinema) 0.08s;
 }
 html.is-ready .site-header {
   opacity: 1;
@@ -406,12 +409,10 @@ html.is-ready .site-header {
   padding: 7px 9px;
   max-width: 100%;
   border-radius: 999px;
-  background: var(--nav-bg);
+  background: var(--nav-solid);
   border: 1px solid var(--stroke);
-  backdrop-filter: blur(22px) saturate(160%);
-  -webkit-backdrop-filter: blur(22px) saturate(160%);
   box-shadow: 0 16px 48px -14px rgba(0, 0, 0, 0.62), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  transition: background-color 0.4s var(--ease-cinema), border-color 0.4s var(--ease-cinema), box-shadow 0.4s;
+  transition: background-color 0.35s var(--ease-cinema), border-color 0.35s var(--ease-cinema), box-shadow 0.35s;
 }
 .nav:hover {
   border-color: var(--stroke-hi);
@@ -448,13 +449,15 @@ html.is-ready .site-header {
 /* قرص لغزنده مایع پشت لینک‌های منو */
 .nav__pill {
   position: absolute;
-  top: 2px; bottom: 2px; right: 0;
+  top: 2px; bottom: 2px;
+  left: 0; right: auto;
   width: 0;
   border-radius: 999px;
   background: linear-gradient(135deg, var(--gold-soft-2), rgba(224, 175, 83, 0.09));
   border: 1px solid var(--stroke-hi);
   box-shadow: 0 6px 22px -6px var(--gold-glow), inset 0 1px 0 rgba(255, 255, 255, 0.16);
-  transition: transform 0.56s var(--ease-spring), width 0.56s var(--ease-spring), opacity 0.3s ease;
+  transition: transform 0.32s var(--ease-out), width 0.32s var(--ease-out), opacity 0.2s ease;
+  will-change: transform;
   pointer-events: none;
   opacity: 0;
 }
@@ -637,7 +640,7 @@ main { position: relative; z-index: 2; }
   display: flex;
   flex-direction: column;
   justify-content: center;
-  will-change: transform, opacity, filter;
+  will-change: transform, opacity;
 }
 .hero__grid {
   display: grid;
@@ -1939,3 +1942,7 @@ img, picture, .stage-card, .work-tile, .portrait-arch, .case-modal__media {
     -webkit-backdrop-filter: none;
   }
 }
+
+/* Anchor targets must clear the floating header, whichever link was clicked. */
+main [id], [id="hero"] { scroll-margin-top: var(--header-offset, 96px); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
