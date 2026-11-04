@@ -593,7 +593,7 @@ const DEFAULT_SITE = {
       // On narrow screens the menu scrolls horizontally: keep the active pill reachable.
       if (menu && menu.scrollWidth > menu.clientWidth + 4) {
         const link = links.find((l) => l.dataset.nav === id);
-        link?.scrollIntoView({ block: "nearest", inline: "center" });
+        if (link && typeof link.scrollIntoView === "function") link.scrollIntoView({ block: "nearest", inline: "center" });
       }
       return true;
     };
@@ -654,8 +654,13 @@ const DEFAULT_SITE = {
       clearTimeout(lockTimer);
       lockTimer = setTimeout(releaseLock, 1600);
       const behavior = reduceMotion.matches ? "auto" : "smooth";
-      if (target.id === "hero") window.scrollTo({ top: 0, behavior });
-      else target.scrollIntoView({ behavior, block: "start" });  // the offset comes from CSS scroll-margin-top
+      if (target.id === "hero") {
+        window.scrollTo({ top: 0, behavior });
+      } else if (typeof target.scrollIntoView === "function") {
+        target.scrollIntoView({ behavior, block: "start" });     // the offset comes from CSS scroll-margin-top
+      } else {
+        window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 80, behavior });
+      }
     };
 
     links.forEach((link, i) => {
@@ -713,6 +718,51 @@ const DEFAULT_SITE = {
 
     measure();
     queueSpy();
+  }
+
+  /* ---------- منوی همبرگری موبایل (جایگزین نوار اسکرول افقی) ---------- */
+  function initNavToggle() {
+    const nav = $(".nav");
+    const toggle = $("#nav-toggle");
+    const menu = $("#nav-menu");
+    if (!nav || !toggle || !menu) return;
+
+    const desktop = window.matchMedia("(min-width: 761px)");
+    const isOpen = () => nav.classList.contains("nav--open");
+    const setOpen = (open, refocus) => {
+      if (open === isOpen()) return;
+      nav.classList.toggle("nav--open", open);
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      toggle.setAttribute("aria-label", open ? "بستن منو" : "باز کردن منو");
+      if (!open && refocus) toggle.focus();
+    };
+
+    toggle.addEventListener("click", () => setOpen(!isOpen()));
+    menu.addEventListener("click", (e) => {
+      if (e.target instanceof Element && e.target.closest(".nav__link")) setOpen(false);
+    });
+    document.addEventListener("pointerdown", (e) => {
+      if (isOpen() && e.target instanceof Node && !nav.contains(e.target)) setOpen(false);
+    }, { passive: true });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && isOpen()) setOpen(false, true);
+    });
+    window.addEventListener("scroll", () => { if (isOpen()) setOpen(false); }, { passive: true });
+    desktop.addEventListener("change", () => { if (desktop.matches) setOpen(false); });
+  }
+
+  /* ---------- بودجه‌ی حرکت: بخش‌های بیرون از دید انیمیشن اجرا نمی‌کنند ---------- */
+  function initMotionBudget() {
+    if (!("IntersectionObserver" in window)) return;
+    const zones = [$("#hero"), $(".orbit-portal")].filter(Boolean);
+    if (!zones.length) return;
+    const io = new IntersectionObserver((entries) => {
+      for (const en of entries) {
+        if (en.isIntersecting) en.target.removeAttribute("data-motion-paused");
+        else en.target.setAttribute("data-motion-paused", "");
+      }
+    }, { rootMargin: "160px 0px" });
+    zones.forEach((zone) => io.observe(zone));
   }
 
   /* ---------- دکمه‌های مغناطیسی نرم ---------- */
@@ -972,13 +1022,13 @@ const DEFAULT_SITE = {
       const rotY = clamp(d * DIR * 22, -34, 34);
       const z = -k * 130;
       const op = k < 0.25 ? 1 : Math.max(0.22, 0.78 - (k - 1) * 0.28);
-      const blur = k < 0.3 ? 0 : Math.min(4.2, k * 1.15);
 
       el.style.transform = `translate3d(${x.toFixed(1)}px, 0, ${z.toFixed(1)}px) scale(${scale.toFixed(3)}) rotateY(${rotY.toFixed(2)}deg)`;
       el.style.opacity = op.toFixed(3);
-      el.style.filter = blur > 0.08 ? `blur(${blur.toFixed(2)}px)` : "none";
-      el.style.zIndex = String(Math.round(30 - k * 6));
-      el.style.pointerEvents = "auto";
+      // Depth now comes from scale/opacity only: a per-frame filter blur forced a repaint per card.
+      const depth = String(Math.round(30 - k * 6));
+      if (el.style.zIndex !== depth) el.style.zIndex = depth;
+      if (el.style.pointerEvents !== "auto") el.style.pointerEvents = "auto";
       el.classList.toggle("is-active", i === stageIdx);
     });
   }
@@ -1420,6 +1470,12 @@ const DEFAULT_SITE = {
     const refreshHeroHeight = () => { if (hero) heroHeight = hero.offsetHeight || window.innerHeight; };
     window.addEventListener("resize", refreshHeroHeight, { passive: true });
 
+    let marqueeHalf = 0;
+    const measureMarquee = () => { marqueeHalf = marqueeTrack ? marqueeTrack.scrollWidth / 2 : 0; };
+    measureMarquee();
+    window.addEventListener("resize", measureMarquee, { passive: true });
+    document.fonts?.ready.then(measureMarquee);
+
     // پارالاکس ماوس روی صحنه پرتره هیرو
     let ptx = 0, pty = 0, pcx = 0, pcy = 0;
     if (FINE_POINTER && hero) {
@@ -1486,14 +1542,12 @@ const DEFAULT_SITE = {
       }
 
       // حرکت پیوسته Marquee واکنش‌گرا به سرعت اسکرول
-      if (marqueeTrack) {
-        const halfW = marqueeTrack.scrollWidth / 2;
-        if (halfW > 0) {
-          const speed = 0.65 + Math.min(4.5, Math.abs(scrollVelocity) * 0.15);
-          marqueeX -= speed;
-          if (Math.abs(marqueeX) >= halfW) marqueeX += halfW;
-          marqueeTrack.style.transform = `translate3d(${marqueeX.toFixed(1)}px, 0, 0)`;
-        }
+      // (عرض نوار کش می‌شود؛ خواندن scrollWidth در هر فریم یک layout اجباری بود)
+      if (marqueeTrack && marqueeHalf > 0) {
+        const speed = 0.65 + Math.min(4.5, Math.abs(scrollVelocity) * 0.15);
+        marqueeX -= speed;
+        if (Math.abs(marqueeX) >= marqueeHalf) marqueeX += marqueeHalf;
+        marqueeTrack.style.transform = `translate3d(${marqueeX.toFixed(1)}px, 0, 0)`;
       }
     };
 
@@ -1578,6 +1632,8 @@ const DEFAULT_SITE = {
     initTheme();
     renderAll();
     initSmoothHeader();
+    initNavToggle();
+    initMotionBudget();
     initWorksInteractions();
     initOrderAndCopy();
     initCinemaCursor();

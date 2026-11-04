@@ -136,6 +136,7 @@ ul, ol { list-style: none; }
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
+  transform: translateZ(0);
 }
 .cinema-bg__orb {
   position: absolute;
@@ -394,12 +395,13 @@ ul, ol { list-style: none; }
   padding-inline: 12px;
   pointer-events: none;
   opacity: 0;
-  transform: translateY(-22px);
+  transform: translate3d(0, -22px, 0);
   transition: opacity 0.55s var(--ease-cinema) 0.08s, transform 0.55s var(--ease-cinema) 0.08s;
+  will-change: transform, opacity;
 }
 html.is-ready .site-header {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate3d(0, 0, 0);
 }
 .nav {
   pointer-events: auto;
@@ -604,22 +606,23 @@ main { position: relative; z-index: 2; }
   width: 60%;
   left: -80%;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
-  transform: skewX(-24deg);
-  animation: btn-sheen 4.8s ease-in-out infinite;
+  transform: skewX(-24deg) translateX(0);
+  animation: btn-sheen 5.2s ease-in-out infinite;
+  will-change: transform;
   pointer-events: none;
 }
+/* Compositor-only sweep: an animated `left` used to reflow the button every frame. */
 @keyframes btn-sheen {
-  0%, 68% { left: -80%; }
-  100% { left: 140%; }
+  0%, 66% { transform: skewX(-24deg) translateX(0); }
+  100% { transform: skewX(-24deg) translateX(370%); }
 }
 .btn--gold:hover {
   box-shadow: 0 22px 52px -10px var(--gold-glow);
 }
 .btn--ghost {
-  background: var(--surface);
+  background: var(--surface-2);
   border-color: var(--stroke-hi);
   color: var(--txt-1);
-  backdrop-filter: blur(12px);
 }
 .btn--ghost:hover {
   background: var(--gold-soft);
@@ -689,10 +692,11 @@ html.is-ready .word-inner {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: gold-shimmer 6s linear infinite;
+  animation: gold-shimmer 7.5s linear infinite;
 }
 @keyframes gold-shimmer {
-  to { background-position: 220% center; }
+  0%, 62% { background-position: 0% center; }
+  100% { background-position: 220% center; }
 }
 
 /* انیمیشن ورود لایه‌های هیرو */
@@ -786,7 +790,6 @@ html.is-ready .hero__reveal {
   padding: 9px;
   background: var(--surface-2);
   border: 1px solid var(--stroke-hi);
-  backdrop-filter: blur(16px);
   box-shadow: 0 18px 36px -10px rgba(0, 0, 0, 0.65), 0 0 22px -6px var(--gold-glow);
   animation: tool-float 6s ease-in-out infinite;
   animation-delay: calc(var(--i, 0) * -1.5s);
@@ -846,9 +849,8 @@ html.is-ready .hero__reveal {
   z-index: 5;
   padding: 12px 16px;
   border-radius: 18px;
-  background: var(--nav-bg);
+  background: var(--nav-solid);
   border: 1px solid var(--stroke-hi);
-  backdrop-filter: blur(18px);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -881,9 +883,8 @@ html.is-ready .hero__reveal {
 .stat-card {
   padding: 15px 14px;
   border-radius: 18px;
-  background: var(--surface);
+  background: var(--surface-2);
   border: 1px solid var(--stroke);
-  backdrop-filter: blur(16px);
   display: grid;
   gap: 2px;
   transition: border-color 0.35s, transform 0.35s var(--ease-spring);
@@ -998,14 +999,15 @@ html.is-ready .hero__reveal {
   opacity: 1;
   transform: translate3d(0, 0, 0) scale(1);
   filter: blur(0);
+  will-change: auto;
 }
 
 /* افکت درخشش سه‌بعدی کارت‌ها (3D Tilt Specular Glare) */
 [data-tilt] {
   position: relative;
   transform-style: preserve-3d;
-  will-change: transform;
 }
+[data-tilt]:hover { will-change: transform; }
 .card-glare {
   position: absolute;
   inset: 0;
@@ -1268,7 +1270,7 @@ html.is-ready .hero__reveal {
   border: 1px solid var(--stroke-hi);
   box-shadow: var(--shadow-lg);
   cursor: grab;
-  will-change: transform, opacity, filter;
+  will-change: transform, opacity;
 }
 .stage-card:active { cursor: grabbing; }
 .stage-card.is-active {
@@ -1334,9 +1336,8 @@ html.is-ready .hero__reveal {
   width: 48px; height: 48px;
   border-radius: 50%;
   border: 1px solid var(--stroke-hi);
-  background: var(--nav-bg);
+  background: var(--nav-solid);
   color: var(--txt-1);
-  backdrop-filter: blur(16px);
   display: grid;
   place-items: center;
   cursor: pointer;
@@ -1426,10 +1427,9 @@ html.is-ready .hero__reveal {
   top: 14px; right: 14px;
   padding: 5px 12px;
   border-radius: 99px;
-  background: rgba(9, 9, 12, 0.8);
+  background: rgba(9, 9, 12, 0.92);
   border: 1px solid rgba(224, 175, 83, 0.48);
   color: #fae0a2;
-  backdrop-filter: blur(8px);
   font-size: 11.5px;
   font-weight: 700;
 }
@@ -1748,8 +1748,7 @@ html.is-ready .hero__reveal {
 .case-modal__backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(6, 6, 8, 0.86);
-  backdrop-filter: blur(20px);
+  background: rgba(6, 6, 8, 0.95);
 }
 .case-modal__dialog {
   position: relative;
@@ -1861,6 +1860,7 @@ html.is-ready .hero__reveal {
   display: flex;
   align-items: center;
   gap: 10px;
+  transform: translateZ(0);
 }
 .quick-wa {
   padding: 11px 18px;
@@ -1879,9 +1879,8 @@ html.is-ready .hero__reveal {
   width: 42px; height: 42px;
   border-radius: 50%;
   border: 1px solid var(--stroke-hi);
-  background: var(--nav-bg);
+  background: var(--nav-solid);
   color: var(--gold);
-  backdrop-filter: blur(14px);
   display: grid;
   place-items: center;
   cursor: pointer;
@@ -1934,15 +1933,93 @@ img, picture, .stage-card, .work-tile, .portrait-arch, .case-modal__media {
 .order-honeypot { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 .order-privacy { font-size: 11px; line-height: 1.9; color: var(--txt-3); margin-top: 14px; }
 
-/* Low-power profile: touch screens and narrow viewports skip decorative motion and frosted glass. */
+/* Low-power profile: touch screens and narrow viewports keep only the motion that matters. */
 @media (pointer: coarse), (max-width: 760px) {
-  .hero__halo, .hero__ring, .float-tool, .portrait-arch__sheen { animation: none; }
-  .stat-card, .float-tool, .portrait-badge, .btn--ghost, .work-tile__badge, .stage-nav {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+  .cinema-bg__orb,
+  .hero__halo,
+  .hero__ring,
+  .float-tool,
+  .portrait-arch__sheen,
+  .hero__title-gold,
+  .btn--gold::after,
+  .orbit-portal__rings span,
+  .scroll-cue__wheel { animation: none; }
+  .hero__title-gold { background-position: 50% center; }
+
+  /* Reveals keep their opacity/transform slide but drop the blur: animating a
+     filter on every section is what made scrolling on phones feel heavy. */
+  .hero__reveal { filter: none; transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out); }
+  html.is-ready .hero__reveal { filter: none; }
+  [data-cinematic] { filter: none; transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out); }
+  [data-cinematic].is-visible { filter: none; }
+  .word-inner { filter: none; transition: transform 0.7s var(--ease-cinema), opacity 0.6s var(--ease-out); }
+}
+
+/* ---------- هدر موبایل: منوی همبرگری به‌جای اسکرول افقی ---------- */
+.nav__toggle {
+  display: none;
+  width: 34px; height: 34px;
+  flex-shrink: 0;
+  place-items: center;
+  gap: 3.5px;
+  border-radius: 50%;
+  border: 1px solid var(--stroke);
+  background: transparent;
+  color: var(--txt-1);
+  cursor: pointer;
+  transition: color 0.25s, border-color 0.25s, background-color 0.25s;
+}
+.nav__toggle i {
+  display: block;
+  width: 15px; height: 1.6px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: transform 0.26s var(--ease-out), opacity 0.18s linear;
+}
+.nav__toggle:hover { color: var(--gold); border-color: var(--stroke-hi); }
+.nav__toggle:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+@media (max-width: 760px) {
+  .nav { position: relative; width: 100%; justify-content: space-between; }
+  .nav__toggle { display: grid; }
+  .nav--open .nav__toggle i:nth-child(1) { transform: translateY(4.4px) rotate(45deg); }
+  .nav--open .nav__toggle i:nth-child(2) { opacity: 0; }
+  .nav--open .nav__toggle i:nth-child(3) { transform: translateY(-4.4px) rotate(-45deg); }
+
+  /* The old horizontally scrolling strip becomes a dropdown sheet. */
+  .nav__menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0; left: 0;
+    z-index: 3;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    padding: 7px;
+    overflow: visible;
+    border-radius: 20px;
+    background: var(--nav-solid);
+    border: 1px solid var(--stroke);
+    box-shadow: 0 26px 60px -22px rgba(0, 0, 0, 0.55);
   }
+  .nav--open .nav__menu { display: flex; }
+  .nav__menu .nav__link {
+    padding: 12px 14px;
+    border-radius: 14px;
+    font-size: 13.5px;
+    text-align: start;
+  }
+  .nav__menu .nav__link.is-active { background: var(--gold-soft); }
+  .nav__menu .nav__link:hover { background: var(--gold-soft); }
+  .nav__pill { display: none; }
 }
 
 /* Anchor targets must clear the floating header, whichever link was clicked. */
 main [id], [id="hero"] { scroll-margin-top: var(--header-offset, 96px); }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* Off-screen sections stop animating: the browser keeps no paint work for them. */
+[data-motion-paused] *,
+[data-motion-paused] *::before,
+[data-motion-paused] *::after { animation-play-state: paused !important; }
