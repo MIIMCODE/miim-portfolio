@@ -510,7 +510,7 @@ const DEFAULT_SITE = {
     }
 
     const orderForm = $("#order-form");
-    if (orderForm) orderForm.action = 'https://jmpwryddrxmuwzmbmhsb.supabase.co/functions/v1/miim-rubika';
+    if (orderForm) orderForm.action = 'https://icpuwsultralrxbeukqw.supabase.co/functions/v1/miim-rubika';
 
     const waDigits = intl.replace("+", "");
     const quickWa = $("#quick-wa");
