@@ -1,281 +1,529 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<!doctype html>
+<html lang="fa" dir="rtl" data-theme="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="color-scheme" content="dark">
-  <meta name="theme-color" content="#272c33">
-  <meta name="robots" content="index, follow">
-
-  <title>مجتبی میدانی | رسانه میم — طراح گرافیک و وب</title>
-  <meta name="description" content="پورتفولیوی مجتبی میدانی (رسانه میم)؛ طراح گرافیک، طراح وب، عکاس و تدوین‌گر. نمونه‌کارها، مهارت‌ها و راه‌های ارتباطی.">
-  <meta name="author" content="مجتبی میدانی — رسانه میم">
-
-  <!-- پیش‌نمایش لینک در شبکه‌های اجتماعی -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#08080a">
+  <title>استودیو خلاقیت رسانه میم | مجتبی میدانی — طراح گرافیک، رابط کاربری و وب</title>
+  <meta name="description" content="استودیو خلاقیت دیجیتال رسانه میم (مجتبی میدانی) — طراحی اختصاصی وب‌سایت، رابط و تجربه کاربری (UI/UX)، هویت بصری برند، لوگو، بسته‌بندی و موشن گرافیک.">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="fa_IR">
-  <meta property="og:site_name" content="رسانه میم">
-  <meta property="og:title" content="مجتبی میدانی | رسانه میم — طراح گرافیک و وب">
-  <meta property="og:description" content="طراحی گرافیک، وب، عکاسی و تدوین؛ نمونه‌کارها و راه‌های ارتباطی با رسانه میم.">
-  <meta property="og:image" content="https://miimcode.github.io/miim-portfolio/assets/work-1.svg">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="مجتبی میدانی | رسانه میم">
-  <meta name="twitter:description" content="طراحی گرافیک، وب، عکاسی و تدوین؛ نمونه‌کارها و راه‌های ارتباطی با رسانه میم.">
-  <meta name="twitter:image" content="https://miimcode.github.io/miim-portfolio/assets/work-1.svg">
-
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23272c33'/%3E%3Ccircle cx='32' cy='32' r='11' fill='none' stroke='%23e9b872' stroke-width='5'/%3E%3Ccircle cx='46' cy='18' r='4' fill='%23e9b872'/%3E%3C/svg%3E">
-
-  <link rel="preload" href="font/vazirmatn-arabic-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="font/vazirmatn-arabic-700-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="assets/portrait.svg" as="image">
-
-  <link rel="stylesheet" href="style.css">
-  <script>document.documentElement.classList.add("js");</script>
+  <meta property="og:title" content="رسانه میم | مجتبی میدانی — طراح گرافیک، UI/UX و وب">
+  <meta property="og:description" content="خلق هویت‌های ماندگار در مرز هنر و تکنولوژی — طراحی وب‌سایت، رابط کاربری، برندینگ و موشن گرافیک.">
+  <meta property="og:image" content="Image/logo.png">
+  <link rel="icon" type="image/png" href="Image/logo.png">
+  <script>
+    try {
+      var t = localStorage.getItem("miim:theme");
+      if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  </script>
+  <link rel="preload" href="font/Doran.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="font/Vazirmatn-Variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css?v=59101ec8a5aa">
 </head>
 <body class="is-loading">
 
-  <!-- صفحه‌ی بارگذاری -->
-  <div class="loader" id="loader" role="status" aria-live="polite" aria-label="در حال بارگذاری">
-    <div class="loader__panel loader__panel--back" aria-hidden="true"></div>
-    <div class="loader__panel">
-      <span class="loader__blob loader__blob--a" aria-hidden="true"></span>
-      <span class="loader__blob loader__blob--b" aria-hidden="true"></span>
-      <div class="loader__center">
-        <div class="loader__mark" aria-hidden="true">
-          <svg viewBox="0 0 120 120" width="120" height="120">
-            <circle class="loader__orbit" cx="60" cy="60" r="46" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-            <circle class="loader__ring" cx="60" cy="60" r="22" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" pathLength="100"/>
-            <g class="loader__spin">
-              <circle class="loader__dot" cx="60" cy="14" r="6" fill="var(--accent)"/>
-            </g>
-          </svg>
-        </div>
-        <p class="loader__name" id="loader-name">رسانه میم</p>
-        <p class="loader__role" dir="ltr">GRAPHIC &amp; WEB DESIGNER</p>
-        <div class="loader__bar" aria-hidden="true"><span class="loader__fill" id="loader-fill"></span></div>
-        <span class="loader__pct" id="loader-pct" aria-hidden="true">۰٪</span>
+  <!-- خط نورانی پیشرفت اسکرول -->
+  <div class="scroll-bar" aria-hidden="true"><span class="scroll-bar__fill" id="scroll-fill"></span></div>
+
+  <!-- بوم ذرات طلایی سینمایی و نور محیطی -->
+  <div class="cinema-bg" aria-hidden="true">
+    <div class="cinema-bg__orb cinema-bg__orb--1"></div>
+    <div class="cinema-bg__orb cinema-bg__orb--2"></div>
+    <div class="cinema-bg__orb cinema-bg__orb--3"></div>
+    <div class="cinema-bg__grid"></div>
+    <canvas class="cinema-canvas" id="cinema-canvas"></canvas>
+    <div class="cinema-bg__vignette"></div>
+  </div>
+
+  <!-- نشانگر ماوس سینمایی مغناطیسی (دسکتاپ) -->
+  <div class="cursor-glow" id="cursor-glow" aria-hidden="true"></div>
+  <div class="cursor-ring" id="cursor-ring" aria-hidden="true"><span class="cursor-ring__txt" id="cursor-txt"></span></div>
+  <div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+
+  <!-- پرده سینمایی لودر (Split-Shutter Aperture Loader) -->
+  <div class="loader" id="loader" role="status" aria-live="polite" aria-label="در حال بارگذاری استودیو رسانه میم">
+    <div class="loader__shutter loader__shutter--top"></div>
+    <div class="loader__shutter loader__shutter--bot"></div>
+    <div class="loader__beam"></div>
+    <div class="loader__center">
+      <div class="loader__aperture">
+        <svg class="loader__svg" viewBox="0 0 120 120" aria-hidden="true">
+          <circle class="loader__circle-bg" cx="60" cy="60" r="54"></circle>
+          <circle class="loader__circle-prog" id="loader-arc" cx="60" cy="60" r="54"></circle>
+        </svg>
+        <img src="Image/logo.png" alt="رسانه میم" class="loader__logo" id="loader-logo">
+      </div>
+      <div class="loader__title" data-bind="brand">رسانه میم</div>
+      <div class="loader__meta">
+        <span>STUDIO REEL</span>
+        <span class="loader__pct" id="loader-pct">۰٪</span>
       </div>
     </div>
   </div>
 
-  <!-- فضای پس‌زمینه -->
-  <div class="bg" aria-hidden="true">
-    <span class="bg__blob bg__blob--a"></span>
-    <span class="bg__blob bg__blob--b"></span>
-    <span class="bg__blob bg__blob--c"></span>
-    <span class="bg__noise"></span>
-  </div>
+  <!-- هدر کپسولی نرم شناور (مشابه هدر نرم قبلی با قرص لغزنده مایع و جذب مغناطیسی) -->
+  <header class="site-header">
+    <nav class="nav" aria-label="ناوبری اصلی">
+      <a class="nav__brand" href="#hero" data-magnetic aria-label="رسانه میم — بازگشت به ابتدا">
+        <img src="Image/logo.png" alt="لوگوی رسانه میم" class="nav__logo-img" id="nav-logo">
+      </a>
 
-  <!-- ناوبری -->
-  <header class="nav" id="nav">
-    <a class="nav__brand" href="#hero" aria-label="بازگشت به ابتدا">
-      <svg viewBox="0 0 64 64" width="26" height="26" aria-hidden="true">
-        <circle cx="32" cy="32" r="11" fill="none" stroke="currentColor" stroke-width="5"/>
-        <circle cx="46" cy="18" r="4" fill="var(--accent)"/>
-      </svg>
-    </a>
-    <nav class="nav__menu" aria-label="ناوبری اصلی">
-      <a href="#hero" class="nav__link is-active" data-nav="hero" data-bind="navHero">خانه</a>
-      <a href="#about" class="nav__link" data-nav="about" data-bind="navAbout">درباره</a>
-      <a href="#works" class="nav__link" data-nav="works" data-bind="navWorks">آثار</a>
-      <a href="#contact" class="nav__link" data-nav="contact" data-bind="navContact">تماس</a>
-      <span class="nav__pill" aria-hidden="true"></span>
+      <ul class="nav__menu" role="list">
+        <span class="nav__pill" aria-hidden="true"></span>
+        <li><a class="nav__link is-active" href="#hero" data-nav="hero">معرفی</a></li>
+        <li><a class="nav__link" href="#about" data-nav="about">داستان و مهارت</a></li>
+        <li><a class="nav__link" href="#services" data-nav="services">خدمات</a></li>
+        <li><a class="nav__link" href="#works" data-nav="works">نمونه کارها</a></li>
+        <li><a class="nav__link" href="#process" data-nav="process">مراحل کار</a></li>
+        <li><a class="nav__link" href="#contact" data-nav="contact">تماس و سفارش</a></li>
+      </ul>
+
+      <div class="nav__extra">
+        <button class="nav__tool theme-toggle" id="theme-toggle" type="button" data-magnetic title="تغییر تم (تاریک لوکس / روشن مجله‌ای)" aria-label="تغییر تم رنگی">
+          <svg data-icon="sun" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 2.5v2.3M12 19.2v2.3M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M2.5 12h2.3M19.2 12h2.3M4.9 19.1l1.6-1.6M17.5 6.5l1.6-1.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          <svg data-icon="moon" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M20.2 14.6A8.2 8.2 0 0 1 9.4 3.8a8.4 8.4 0 1 0 10.8 10.8Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+        </button>
+
+        <a class="nav__tool nav__admin" href="admin/?v=de38e7b2bb55" data-magnetic title="اتاق فرمان (پنل مدیریت)" aria-label="ورود به اتاق فرمان">
+          <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><rect x="5" y="11" width="14" height="9.5" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8.5 11V8a3.5 3.5 0 0 1 7 0v3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          <span>ورود مدیر</span>
+        </a>
+      </div>
     </nav>
-    <a class="nav__admin" href="admin/" aria-label="ورود به اتاق فرمان (پنل مدیریت)" title="اتاق فرمان">
-      <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.4 3.1 8 7.5 9.5 4.4-1.5 7.5-5.1 7.5-9.5V6z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="11" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 13v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-      <span>اتاق فرمان</span>
-    </a>
   </header>
 
-  <main id="main">
+  <main>
+    <!-- ۱. صحنه اول: هیرو چسبان سینمایی (Sticky Scrollytelling Hero) -->
+    <section class="hero" id="hero">
+      <div class="hero__sticky" id="hero-sticky">
+        <div class="container hero__grid">
+          <div class="hero__copy">
+            <div class="hero__reveal" style="--hd:0.05s">
+              <span class="eyebrow-pill">
+                <span class="eyebrow-pill__dot eyebrow-pill__dot--live" id="hero-avail-dot"></span>
+                <span data-bind="heroEyebrow">استودیو خلاقیت دیجیتال — رسانه میم</span>
+              </span>
+            </div>
 
-    <!-- ۰۱ — هیرو -->
-    <section class="hero" id="hero" aria-labelledby="hero-name">
-      <div class="container hero__inner">
+            <h1 class="hero__title" id="hero-title"></h1>
 
-        <div class="hero__text">
-          <p class="hero__greet" data-reveal data-bind="heroGreet">سلام، من مجتبی‌ام</p>
-          <h1 class="hero__name" id="hero-name" data-reveal data-bind="name">مجتبی میدانی</h1>
-          <p class="hero__role" data-reveal>
-            <span class="hero__role-line" aria-hidden="true"></span>
-            <span class="hero__role-fa" data-bind="roleFa">طراح گرافیک و وب دیزاینر</span>
-            <span class="hero__role-en" dir="ltr" data-bind="roleEn">Graphic &amp; Web Designer</span>
-          </p>
+            <div class="hero__identity hero__reveal" style="--hd:0.28s">
+              <strong data-bind="name">مجتبی میدانی</strong>
+              <span class="hero__sep">✦</span>
+              <span data-bind="roleFa">طراح ارشد گرافیک، رابط کاربری و وب</span>
+              <span class="hero__role-en" dir="ltr" data-bind="roleEn">Creative Director · UI/UX &amp; Web</span>
+            </div>
+
+            <p class="hero__bio hero__reveal" style="--hd:0.36s" data-bind="heroBio"></p>
+
+            <div class="hero__actions hero__reveal" style="--hd:0.44s">
+              <a class="btn btn--gold" href="#contact" data-magnetic>
+                <span>ثبت سفارش و مشاوره رایگان</span>
+                <svg viewBox="0 0 24 24" width="18" height="18"><path d="M19 12H5m0 0 6-6m-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+              <a class="btn btn--ghost" href="#works" data-magnetic>
+                <span>مشاهده ویترین آثار</span>
+              </a>
+            </div>
+
+            <!-- نوار آمار ۴ ستونه در هیرو -->
+            <div class="stats-strip hero__reveal" style="--hd:0.54s" id="stats-strip"></div>
+          </div>
+
+          <!-- صحنه سه‌بعدی پرتره با هاله‌های چرخان و آیکون‌های شناور -->
+          <div class="hero__stage hero__reveal" style="--hd:0.18s" id="hero-stage">
+            <div class="hero__halo" id="hero-halo" aria-hidden="true"></div>
+            <div class="hero__ring hero__ring--outer" aria-hidden="true"></div>
+            <div class="hero__ring hero__ring--inner" aria-hidden="true"></div>
+
+            <div class="hero__icons" id="hero-icons" aria-hidden="true">
+              <span class="float-tool float-tool--1" style="--i:0"><img src="Image/Icon-Ps.png" alt="Photoshop"></span>
+              <span class="float-tool float-tool--2 float-tool--web" style="--i:1" title="طراحی و توسعه وب‌سایت">
+                <svg viewBox="0 0 40 40" fill="none" aria-hidden="true" focusable="false">
+                  <rect x="3" y="5" width="34" height="30" rx="6" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2"/>
+                  <path d="M3 14h34" stroke="currentColor" stroke-width="2"/>
+                  <circle cx="8" cy="9.5" r="1.2" fill="currentColor"/>
+                  <circle cx="12" cy="9.5" r="1.2" fill="currentColor"/>
+                  <circle cx="16" cy="9.5" r="1.2" fill="currentColor"/>
+                  <path d="m14 20-5 4.5 5 4.5m12-9 5 4.5-5 4.5m-4-11-4 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span class="float-tool float-tool--3" style="--i:2"><img src="Image/Icon-Ai.png" alt="Illustrator"></span>
+              <span class="float-tool float-tool--4" style="--i:3"><img src="Image/Icon-Ae.png" alt="After Effects"></span>
+            </div>
+
+            <div class="portrait-arch" id="portrait-arch">
+              <span class="portrait-arch__sheen" aria-hidden="true"></span>
+              <img class="portrait-arch__img" id="hero-photo" src="Image/My-photo.png" alt="مجتبی میدانی — استودیو رسانه میم" fetchpriority="high">
+            </div>
+
+            <div class="portrait-badge">
+              <div class="portrait-badge__right">
+                <img src="Image/logo.png" alt="رسانه میم" class="portrait-badge__logo" id="badge-logo">
+                <div>
+                  <div class="portrait-badge__name" data-bind="name">مجتبی میدانی</div>
+                  <div class="portrait-badge__sub" data-bind="brand">رسانه میم</div>
+                </div>
+              </div>
+              <span class="portrait-badge__pill" id="availability-pill" data-bind="availability">آماده پذیرش پروژه جدید</span>
+            </div>
+          </div>
         </div>
 
-        <figure class="hero__figure" data-reveal>
-          <span class="hero__halo" aria-hidden="true"></span>
-          <span class="hero__ring" aria-hidden="true"></span>
-          <div class="hero__icons" id="hero-icons" aria-label="نرم‌افزارهای تخصصی"></div>
-          <img class="hero__photo" id="hero-photo" src="assets/portrait.svg" alt="پرتره‌ی مجتبی میدانی" fetchpriority="high" decoding="async">
-        </figure>
-
-        <aside class="hero__stats" id="hero-stats" aria-label="خلاصه‌ی فعالیت"></aside>
-
-        <div class="hero__cta" data-reveal>
-          <a href="#works" class="pill pill--glass" data-magnetic>
-            <span>مشاهده‌ی آثار</span>
-            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 5v14m0 0-6-6m6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-          <span class="hero__hint" aria-hidden="true">
-            <span class="hero__hint-line"></span>
-            <span>اسکرول کنید</span>
-          </span>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ۰۲ و ۰۳ — درباره و مهارت‌ها -->
-    <section class="about" id="about" aria-labelledby="about-title">
-      <div class="container about__grid">
-
-        <article class="card card--intro" data-reveal>
-          <header class="card__head">
-            <span class="eyebrow" data-bind="aboutEyebrow"></span>
-            <h2 class="card__title" id="about-title" data-bind="aboutHeading"></h2>
-          </header>
-          <p class="card__text" data-bind="aboutText"></p>
-
-          <div class="card__divider" aria-hidden="true"></div>
-
-          <h3 class="card__subtitle" data-bind="expHeading"></h3>
-          <ul class="exp" id="exp-list"></ul>
-        </article>
-
-        <article class="card card--skills" data-reveal>
-          <header class="card__head">
-            <span class="eyebrow" data-bind="skillsEyebrow"></span>
-            <h2 class="card__title" data-bind="skillsHeading"></h2>
-          </header>
-          <ul class="skills" id="skills-list"></ul>
-        </article>
-
-      </div>
-    </section>
-
-    <!-- ۰۴ — آثار -->
-    <section class="works" id="works" aria-labelledby="works-title">
-      <header class="section__head container" data-reveal>
-        <span class="eyebrow" data-bind="worksEyebrow"></span>
-        <h2 class="section__title" id="works-title" data-bind="worksHeading"></h2>
-      </header>
-
-      <div class="container carousel" id="carousel" data-reveal>
-        <div class="carousel__stage" id="stage" tabindex="0" role="region" aria-roledescription="گالری" aria-label="گالری آثار؛ برای مرور بکشید یا از کلیدهای جهت استفاده کنید"></div>
-
-        <div class="carousel__meta">
-          <span class="carousel__tag" id="carousel-tag"></span>
-          <span class="carousel__sep" aria-hidden="true"></span>
-          <span class="carousel__count" id="carousel-count"></span>
-        </div>
-
-        <div class="carousel__rail" id="rail" aria-hidden="true">
-          <span class="carousel__thumb" id="rail-thumb"></span>
-        </div>
-
-        <p class="carousel__hint" id="carousel-hint">برای مرور بکشید · برای مشاهده‌ی کامل، روی اثر ضربه بزنید</p>
-      </div>
-    </section>
-
-    <!-- دعوت به گفتگو -->
-    <section class="cta" id="cta" aria-labelledby="cta-title">
-      <div class="container cta__inner" data-reveal>
-        <span class="cta__glow" aria-hidden="true"></span>
-        <span class="cta__orbit" aria-hidden="true"></span>
-        <h2 class="cta__title" id="cta-title" data-bind="ctaText"></h2>
-        <a href="#contact" class="cta__btn" id="cta-btn" data-magnetic>
-          <span class="cta__btn-ring" aria-hidden="true"></span>
-          <span class="cta__btn-ring cta__btn-ring--2" aria-hidden="true"></span>
-          <span class="cta__btn-core">
-            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 5v14m0 0-6-6m6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </span>
-          <span class="cta__btn-label" data-bind="ctaButton"></span>
+        <a class="scroll-cue" href="#about" aria-label="اسکرول به پایین">
+          <span class="scroll-cue__mouse"><span class="scroll-cue__wheel"></span></span>
+          <span class="scroll-cue__txt">کاوش در استودیو</span>
         </a>
       </div>
     </section>
 
-    <!-- ۰۵ — تماس -->
-    <section class="contact" id="contact" aria-labelledby="contact-title">
-      <div class="container">
-        <header class="section__head" data-reveal>
-          <span class="eyebrow" data-bind="contactEyebrow"></span>
-          <h2 class="section__title" id="contact-title" data-bind="contactHeading"></h2>
-          <p class="section__lead" data-bind="contactLead"></p>
-        </header>
+    <!-- لایه سینمایی محتوا که از روی هیرو بالا می‌آید -->
+    <div class="studio-sheet" id="studio-sheet">
 
-        <div class="contact__grid">
-          <a class="contact__card contact__card--phone" id="contact-phone" href="#" data-reveal>
-            <span class="contact__label">تماس مستقیم</span>
-            <span class="contact__value" dir="ltr" id="contact-phone-text"></span>
-            <span class="contact__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="22" height="22"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
-            </span>
-          </a>
-
-          <div class="contact__card contact__card--id" data-reveal>
-            <span class="contact__label">شناسه در شبکه‌های اجتماعی</span>
-            <span class="contact__value contact__value--id" dir="ltr" id="contact-id"></span>
-            <ul class="socials" id="socials" aria-label="پلتفرم‌ها"></ul>
-          </div>
-
-          <a class="contact__card contact__card--mail" id="contact-mail" href="#" data-reveal>
-            <span class="contact__label">ایمیل</span>
-            <span class="contact__value" dir="ltr" id="contact-email-text"></span>
-            <span class="contact__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="22" height="22"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="m4 7 8 6 8-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </span>
-          </a>
+      <!-- نوار متحرک واکنش‌گرا به سرعت اسکرول -->
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee__track" id="marquee-track">
+          <span class="marquee__item">WEB DESIGN &amp; DEVELOPMENT <span class="marquee__star">✦</span> UI / UX ARCHITECTURE <span class="marquee__star">✦</span> BRAND IDENTITY &amp; LOGO <span class="marquee__star">✦</span> PACKAGING DESIGN <span class="marquee__star">✦</span> MOTION GRAPHICS <span class="marquee__star">✦</span> RESANE MIIM STUDIO <span class="marquee__star">✦</span></span>
+          <span class="marquee__item">WEB DESIGN &amp; DEVELOPMENT <span class="marquee__star">✦</span> UI / UX ARCHITECTURE <span class="marquee__star">✦</span> BRAND IDENTITY &amp; LOGO <span class="marquee__star">✦</span> PACKAGING DESIGN <span class="marquee__star">✦</span> MOTION GRAPHICS <span class="marquee__star">✦</span> RESANE MIIM STUDIO <span class="marquee__star">✦</span></span>
         </div>
       </div>
-    </section>
 
+      <!-- ۲. داستان رسانه میم و تخصص‌ها -->
+      <section class="section" id="about">
+        <div class="container">
+          <div class="about-bento">
+            <article class="bento-card" data-tilt data-cinematic>
+              <span class="card-glare" aria-hidden="true"></span>
+              <span class="eyebrow-pill">
+                <span class="eyebrow-pill__dot"></span>
+                <span data-bind="aboutEyebrow">داستان رسانه میم</span>
+              </span>
+              <h2 class="sec-title" data-bind="aboutHeading"></h2>
+              <p class="about-story__text" data-bind="aboutText"></p>
+              <ul class="pillars" id="about-pillars"></ul>
+            </article>
+
+            <article class="bento-card" id="skills-card" data-tilt data-cinematic style="--cd:0.14s">
+              <span class="card-glare" aria-hidden="true"></span>
+              <span class="eyebrow-pill">
+                <span class="eyebrow-pill__dot"></span>
+                <span>مهارت‌ها و ابزارهای تخصصی</span>
+              </span>
+              <h2 class="sec-title">تسلط فنی و هنری</h2>
+              <div class="skills-stack" id="skills-list"></div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ۳. کارت‌های خدمات با چرخش سه‌بعدی و Spotlight طلایی -->
+      <section class="section" id="services">
+        <div class="container">
+          <div class="sec-head" data-cinematic>
+            <div>
+              <span class="eyebrow-pill"><span class="eyebrow-pill__dot"></span><span>خدمات استودیو</span></span>
+              <h2 class="sec-title">راهکارهای خلاقانه برای رشد برند شما</h2>
+            </div>
+            <p class="sec-desc">از طراحی هویت بصری و لوگو تا خلق رابط کاربری و پیاده‌سازی وب‌سایت اختصاصی؛ همه‌چیز زیر یک سقف با استاندارد یکپارچه.</p>
+          </div>
+
+          <div class="services-grid" id="services-grid"></div>
+        </div>
+      </section>
+
+      <!-- ۴. ویترین ترکیبی نمونه کارها (3D Inertial Coverflow + Bento Filterable) -->
+      <section class="section" id="works">
+        <div class="container">
+          <div class="sec-head" data-cinematic>
+            <div>
+              <span class="eyebrow-pill"><span class="eyebrow-pill__dot"></span><span>ویترین نمونه کارها</span></span>
+              <h2 class="sec-title">منتخب پروژه‌های اجراشده</h2>
+            </div>
+            <p class="sec-desc">با کشیدن صحنه سه‌بعدی، اسکرول یا انتخاب دسته‌بندی‌ها بین آثار حرکت کنید و با کلیک روی هر اثر، داستان کامل ساخت پروژه را ببینید.</p>
+          </div>
+
+          <div class="works-toolbar" data-cinematic>
+            <div class="filter-tabs" id="filter-tabs" role="tablist" aria-label="فیلتر دسته‌بندی آثار"></div>
+
+            <div class="view-switch" role="group" aria-label="حالت نمایش گالری">
+              <button class="view-switch__btn is-active" type="button" data-view="stage">
+                <svg viewBox="0 0 24 24" width="15" height="15"><rect x="6" y="4" width="12" height="16" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M2.5 7v10M21.5 7v10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                <span>ویترین سه‌بعدی</span>
+              </button>
+              <button class="view-switch__btn" type="button" data-view="grid">
+                <svg viewBox="0 0 24 24" width="15" height="15"><rect x="3.5" y="3.5" width="7" height="7" rx="1.8" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.8" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.8" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.8" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+                <span>نمای شبکه‌ای</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- حالت ۱: صحنه سه‌بعدی اینرسی‌دار -->
+          <div class="stage-wrap" id="works-stage-wrap" data-cinematic>
+            <div class="stage-viewport" id="stage-viewport" tabindex="0" aria-label="ویترین سه‌بعدی نمونه کارها">
+              <div class="stage-floor-glow" aria-hidden="true"></div>
+              <button class="stage-nav stage-nav--prev" id="stage-prev" type="button" data-magnetic aria-label="اثر قبلی">
+                <svg viewBox="0 0 24 24" width="18" height="18"><path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <button class="stage-nav stage-nav--next" id="stage-next" type="button" data-magnetic aria-label="اثر بعدی">
+                <svg viewBox="0 0 24 24" width="18" height="18"><path d="m15 6-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+
+            <div class="stage-progress"><span class="stage-progress__thumb" id="stage-thumb"></span></div>
+
+            <div class="stage-bar">
+              <div class="stage-bar__meta">
+                <span class="stage-bar__count" id="stage-counter">۱ / ۴</span>
+                <strong id="stage-active-title"></strong>
+                <span class="stage-bar__client" id="stage-active-sub"></span>
+              </div>
+              <button class="btn btn--ghost" id="stage-open-case" type="button" data-magnetic style="padding:10px 20px;font-size:13px">
+                <span>جزئیات کامل پروژه</span>
+                <svg viewBox="0 0 24 24" width="16" height="16"><path d="M15 3h6v6M21 3l-8 8M10 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- حالت ۲: گرید Bento فیلتردار -->
+          <div class="works-bento" id="works-bento" hidden></div>
+        </div>
+      </section>
+
+      <!-- ۵. پورتال سینمایی مدارهای طلایی چرخان (3D Golden Orbit Portal) -->
+      <section class="orbit-portal" aria-label="دعوت به همکاری">
+        <div class="orbit-portal__rings" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="orbit-portal__inner" data-cinematic>
+          <span class="eyebrow-pill"><span class="eyebrow-pill__dot eyebrow-pill__dot--live"></span><span>استودیو رسانه میم</span></span>
+          <h2 class="orbit-portal__title">آماده‌اید برندتان را به یک تجربه‌ی ماندگار تبدیل کنیم؟</h2>
+          <a class="btn btn--gold" href="#contact" data-magnetic>
+            <span>شروع گفتگو و ثبت سفارش</span>
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M19 12H5m0 0 6-6m-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </section>
+
+      <!-- ۶. مسیر ۴ مرحله‌ای همکاری -->
+      <section class="section" id="process">
+        <div class="container">
+          <div class="sec-head sec-head--center" data-cinematic>
+            <span class="eyebrow-pill"><span class="eyebrow-pill__dot"></span><span>فرآیند شفاف همکاری</span></span>
+            <h2 class="sec-title">از اولین ایده تا اجرای بی‌نقص</h2>
+            <p class="sec-desc">همه مراحل پروژه با زمان‌بندی مشخص، هم‌فکری مستمر و گزارش شفاف پیش می‌رود تا با خیال آسوده روی رشد کسب‌وکارتان تمرکز کنید.</p>
+          </div>
+
+          <div class="process-grid" id="process-grid"></div>
+        </div>
+      </section>
+
+      <!-- ۷. نظرات مشتریان -->
+      <section class="section" id="testimonials">
+        <div class="container">
+          <div class="sec-head sec-head--center" data-cinematic>
+            <span class="eyebrow-pill"><span class="eyebrow-pill__dot"></span><span>اعتماد کارفرمایان</span></span>
+            <h2 class="sec-title">تجربه برندهایی که همراهشان بوده‌ام</h2>
+          </div>
+
+          <div class="testi-grid" id="testi-grid"></div>
+        </div>
+      </section>
+
+      <!-- ۸. فرم هوشمند ثبت سفارش و ارتباط مستقیم -->
+      <section class="section" id="contact">
+        <div class="container">
+          <div class="sec-head" data-cinematic>
+            <div>
+              <span class="eyebrow-pill"><span class="eyebrow-pill__dot eyebrow-pill__dot--live"></span><span data-bind="contactEyebrow">شروع یک همکاری ماندگار</span></span>
+              <h2 class="sec-title" data-bind="contactHeading"></h2>
+            </div>
+            <p class="sec-desc" data-bind="contactLead"></p>
+          </div>
+
+          <div class="contact-layout">
+            <form class="order-panel" id="order-form" action="https://jmpwryddrxmuwzmbmhsb.supabase.co/functions/v1/miim-rubika" method="POST" novalidate data-cinematic>
+              <div class="chip-group">
+                <span class="chip-group__label">۱. کدام خدمت مدنظر شماست؟</span>
+                <div class="chip-list" id="service-chips">
+                  <button type="button" class="choice-chip is-selected" data-val="طراحی و توسعه وب‌سایت">طراحی و توسعه وب‌سایت</button>
+                  <button type="button" class="choice-chip" data-val="طراحی رابط کاربری (UI/UX)">طراحی رابط کاربری (UI/UX)</button>
+                  <button type="button" class="choice-chip" data-val="لوگو و هویت بصری برند">لوگو و هویت بصری برند</button>
+                  <button type="button" class="choice-chip" data-val="طراحی بسته‌بندی محصول">طراحی بسته‌بندی محصول</button>
+                  <button type="button" class="choice-chip" data-val="موشن گرافیک و تیزر">موشن گرافیک و تیزر</button>
+                </div>
+                <input type="hidden" name="service" id="selected-service" value="طراحی و توسعه وب‌سایت">
+              </div>
+
+              <div class="chip-group">
+                <span class="chip-group__label">۲. سطح پروژه / بودجه پیش‌بینی‌شده:</span>
+                <div class="chip-list" id="budget-chips">
+                  <button type="button" class="choice-chip" data-val="اقتصادی / استارتاپی">اقتصادی / استارتاپی</button>
+                  <button type="button" class="choice-chip is-selected" data-val="حرفه‌ای / شرکتی">حرفه‌ای / شرکتی</button>
+                  <button type="button" class="choice-chip" data-val="اختصاصی VIP">اختصاصی VIP</button>
+                  <button type="button" class="choice-chip" data-val="نیاز به مشاوره دارم">نیاز به مشاوره دارم</button>
+                </div>
+                <input type="hidden" name="budget" id="selected-budget" value="حرفه‌ای / شرکتی">
+              </div>
+
+              <div class="form-row">
+                <label class="field">
+                  <span>نام و نام خانوادگی *</span>
+                  <input type="text" name="name" maxlength="100" id="f-name" placeholder="مثلاً: علی محمدی" required>
+                </label>
+                <label class="field">
+                  <span>شماره موبایل (دارای واتساپ / تلگرام) *</span>
+                  <input type="tel" name="phone" maxlength="30" id="f-phone" dir="ltr" placeholder="09123456789" required>
+                </label>
+              </div>
+
+              <label class="field">
+                <span>ایمیل (اختیاری)</span>
+                <input type="email" name="email" maxlength="120" id="f-email" dir="ltr" placeholder="you@example.com">
+              </label>
+
+              <label class="field">
+                <span>توضیح کوتاه درباره ایده یا پروژه شما *</span>
+                <textarea name="message" maxlength="2000" id="f-msg" rows="3" placeholder="کسب‌وکار شما در چه حوزه‌ای است و چه هدفی از این پروژه دارید؟" required></textarea>
+              </label>
+
+              <label class="order-honeypot" aria-hidden="true">وب‌سایت<input name="website" tabindex="-1" autocomplete="off"></label>
+              <p class="order-privacy">درخواست شما به‌صورت خصوصی ذخیره و برای مدیر از طریق ربات روبیکا ارسال می‌شود؛ به ایمیل وابسته نیست.</p>
+              <div class="order-actions">
+                <button class="btn btn--gold" id="order-submit" type="submit" data-magnetic>
+                  <span>ثبت و ارسال مستقیم درخواست</span>
+                  <svg viewBox="0 0 24 24" width="18" height="18"><path d="M19 12H5m0 0 6-6m-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button class="btn btn--ghost" id="order-wa-btn" type="button" data-magnetic>
+                  <span>ارسال آنی در واتساپ</span>
+                </button>
+                <p class="order-status" id="order-status" role="status" aria-live="polite"></p>
+              </div>
+            </form>
+
+            <div class="contact-side" data-cinematic style="--cd:0.14s">
+              <div class="direct-card" data-tilt>
+                <span class="card-glare" aria-hidden="true"></span>
+                <div>
+                  <div class="direct-card__lbl">تماس تلفنی مستقیم</div>
+                  <div class="direct-card__val"><a id="c-phone-link" href="tel:+989399887950" dir="ltr">۰۹۳۹ ۹۸۸ ۷۹۵۰</a></div>
+                </div>
+                <button class="copy-btn" type="button" data-copy-key="phone">کپی شماره</button>
+              </div>
+
+              <div class="direct-card" data-tilt>
+                <span class="card-glare" aria-hidden="true"></span>
+                <div>
+                  <div class="direct-card__lbl">شناسه تلگرام و اینستاگرام</div>
+                  <div class="direct-card__val" dir="ltr" id="c-id-text">@Resane_miim</div>
+                </div>
+                <button class="copy-btn" type="button" data-copy-key="id">کپی آیدی</button>
+              </div>
+
+              <div class="direct-card" data-tilt>
+                <span class="card-glare" aria-hidden="true"></span>
+                <div>
+                  <div class="direct-card__lbl">پست الکترونیک</div>
+                  <div class="direct-card__val"><a id="c-mail-link" href="mailto:resane.Miim@gmail.com" dir="ltr">resane.Miim@gmail.com</a></div>
+                </div>
+                <button class="copy-btn" type="button" data-copy-key="email">کپی ایمیل</button>
+              </div>
+
+              <div class="direct-card" id="address-card" data-tilt>
+                <span class="card-glare" aria-hidden="true"></span>
+                <div>
+                  <div class="direct-card__lbl">موقعیت استودیو</div>
+                  <div class="direct-card__val" style="font-size:14px" id="c-address-text">خراسان جنوبی، شهرستان خوسف، روستای تقاب</div>
+                </div>
+              </div>
+
+              <div class="social-box">
+                <div class="chip-group__label">ارتباط سریع در شبکه‌های اجتماعی</div>
+                <div class="social-links" id="social-links"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div class="container footer__inner">
+          <div class="footer__brand">
+            <img src="Image/logo.png" alt="رسانه میم" id="footer-logo">
+            <span id="footer-legal">© تمامی حقوق مادی و معنوی این وب‌سایت متعلق به استودیو خلاقیت «رسانه میم» (مجتبی میدانی) است.</span>
+          </div>
+          <div id="footer-year"></div>
+        </div>
+      </footer>
+    </div>
   </main>
 
-  <footer class="footer">
-    <div class="container footer__inner">
-      <p class="footer__legal" id="footer-legal"></p>
-      <p class="footer__meta">
-        <span data-bind="name"></span>
-        <span class="footer__dot" aria-hidden="true"></span>
-        <span id="footer-year"></span>
-        <span class="footer__dot" aria-hidden="true"></span>
-        <a class="footer__admin" href="admin/">اتاق فرمان</a>
-      </p>
-    </div>
-  </footer>
+  <!-- داک شناور مشاوره سریع و بازگشت به بالا -->
+  <div class="quick-dock">
+    <a class="quick-wa" id="quick-wa" href="https://wa.me/989399887950" target="_blank" rel="noopener noreferrer" data-magnetic>
+      <svg viewBox="0 0 24 24" width="17" height="17"><path d="M12 3.5a8.5 8.5 0 0 0-7.3 12.9L3.5 20.5l4.2-1.1A8.5 8.5 0 1 0 12 3.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 8.6c.2-.4.4-.4.7-.4h.5c.2 0 .4.1.5.4l.7 1.7c.1.2 0 .4-.1.6l-.5.6c-.1.1-.2.3 0 .5a6 6 0 0 0 2.9 2.6c.2.1.4.1.5-.1l.7-.8c.2-.2.4-.2.6-.1l1.6.8c.2.1.4.2.4.4 0 .4-.1 1.1-.5 1.5-.5.5-1.3.8-2 .7-1.3-.2-2.9-1-4.2-2.4-1.3-1.3-2-2.8-2.2-4 0-.8.2-1.5.4-2Z" fill="currentColor"/></svg>
+      <span>مشاوره سریع واتساپ</span>
+    </a>
+    <button class="to-top" id="to-top" type="button" data-magnetic aria-label="بازگشت به بالای صفحه">
+      <svg viewBox="0 0 24 24" width="18" height="18"><path d="m6 14 6-6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
 
-  <!-- نمایش تمام‌صفحه‌ی اثر -->
-  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="نمایش اثر" hidden>
-    <div class="lightbox__backdrop" data-lb-close></div>
-    <button class="lightbox__btn lightbox__btn--close" type="button" data-lb-close aria-label="بستن">
-      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-    </button>
-    <button class="lightbox__btn lightbox__btn--prev" type="button" data-lb-prev aria-label="اثر قبلی">
-      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <button class="lightbox__btn lightbox__btn--next" type="button" data-lb-next aria-label="اثر بعدی">
-      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <figure class="lightbox__figure">
-      <img class="lightbox__img" id="lightbox-img" alt="" decoding="async">
-    </figure>
-    <div class="lightbox__info">
-      <span class="lightbox__tag" id="lightbox-tag"></span>
-      <p class="lightbox__desc" id="lightbox-desc"></p>
-      <span class="lightbox__count" id="lightbox-count"></span>
+  <!-- پنجره جزئیات کامل پروژه (Case Study Modal) -->
+  <div class="case-modal" id="case-modal" role="dialog" aria-modal="true" aria-labelledby="case-title" hidden>
+    <div class="case-modal__backdrop" data-case-close></div>
+    <div class="case-modal__dialog">
+      <div class="case-modal__media">
+        <img id="case-img" alt="">
+        <div class="case-modal__nav">
+          <button type="button" id="case-prev" aria-label="پروژه قبلی">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button type="button" id="case-next" aria-label="پروژه بعدی">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="m15 6-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="case-modal__info">
+        <div class="case-modal__top">
+          <span class="eyebrow-pill"><span class="eyebrow-pill__dot"></span><span id="case-tag"></span></span>
+          <button class="case-modal__close" type="button" data-case-close aria-label="بستن پنجره">
+            <svg viewBox="0 0 24 24" width="17" height="17"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+
+        <h3 class="case-modal__title" id="case-title"></h3>
+
+        <div class="case-modal__specs">
+          <div class="case-spec"><span>کارفرما / برند</span><strong id="case-client"></strong></div>
+          <div class="case-spec"><span>سال اجرا</span><strong id="case-year"></strong></div>
+          <div class="case-spec" style="grid-column:1 / -1"><span>ابزارها و تکنولوژی‌ها</span><strong id="case-tools" dir="ltr"></strong></div>
+        </div>
+
+        <p class="case-modal__desc" id="case-desc"></p>
+
+        <a class="btn btn--ghost" id="case-site-link" target="_blank" rel="noopener noreferrer" hidden>
+          <span>مشاهده سایت</span>
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15 3h6v6M21 3l-8 8M10 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+
+        <button class="btn btn--gold" id="case-order-btn" type="button" style="width:100%">
+          <span>سفارش پروژه‌ای مشابه این اثر</span>
+          <svg viewBox="0 0 24 24" width="18" height="18"><path d="M19 12H5m0 0 6-6m-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
     </div>
   </div>
 
-  <noscript>
-    <div style="position:fixed;inset:auto 16px 16px;z-index:300;padding:16px;border-radius:14px;background:#343a43;border:1px solid rgba(255,255,255,.16);text-align:center">
-      برای مشاهده‌ی کامل سایت، جاوااسکریپت را فعال کنید.
-    </div>
-  </noscript>
+  <!-- اعلان کپی -->
+  <div class="site-toast" id="site-toast" role="status" aria-live="polite"></div>
 
-  <script src="vendor/supabase.js"></script>
-  <script src="config.js"></script>
-  <script src="store.js" defer></script>
-  <script src="script.js" defer></script>
+  <script src="vendor/miim-cloud.js?v=992e807fee2f" defer></script>
+  <script src="content.js?v=177488c22bf1" defer></script>
+  <script src="store.js?v=15ceb76922e5" defer></script>
+  <script src="content-guard.js?v=9324333e174b" defer></script>
+  <script src="script.js?v=c091fd582e07" defer></script>
 </body>
 </html>
